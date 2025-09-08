@@ -17,6 +17,8 @@ This workspace contains Python scripts for visualizing meeting data as directed 
   4. Adds nodes and edges for all relevant entities.
   5. Saves the resulting graph visualization as `graph.png`.
 
+![graph.png](graph.png)
+
 ### Nodes-Edges2.py
 
 - **Purpose:**  
@@ -27,6 +29,8 @@ This workspace contains Python scripts for visualizing meeting data as directed 
   3. Safely extracts nested fields for each workgroup.
   4. Adds nodes and edges for all entities across all meetings.
   5. Saves the resulting graph visualization as `graph2.png`.
+
+![graph2.png](graph2.png)
 
 ---
 
