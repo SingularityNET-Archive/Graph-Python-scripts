@@ -23,7 +23,7 @@ This workspace contains Python scripts for visualizing meeting data as directed 
   Processes an array of meeting summaries from a remote JSON file, building a directed graph that includes all workgroups and their associated meetings, people, documents, agenda items, actions, decisions, tags, and emotions.
 - **Key Steps:**  
   1. Downloads JSON data from a URL.
-  2. Iterates through all workgroups in the array.
+  2. Handles both dict and list JSON structures, but always iterates through a list of workgroups.
   3. Safely extracts nested fields for each workgroup.
   4. Adds nodes and edges for all entities across all meetings.
   5. Saves the resulting graph visualization as `graph2.png`.
