@@ -31,7 +31,8 @@ This workspace contains Python scripts for visualizing meeting data as directed 
 ---
 
 **Note:**  
-Both scripts are designed for headless environments (such as dev containers). The graph images are saved to disk and can be viewed using the default browser with:
+Both scripts reference `meeting-summaries-array.json` as their data source, **not** `meeting-summaries-by-id.json`.  
+They are designed for headless environments (such as dev containers). The graph images are saved to disk and can be viewed using the default browser with:
 
 ```bash
 $BROWSER graph.png
