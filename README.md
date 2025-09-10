@@ -42,3 +42,16 @@ They are designed for headless environments (such as dev containers). The graph 
 $BROWSER graph.png
 $BROWSER graph2.png
 ```
+
+### GEXF-Export Script
+
+- **Purpose:**  
+  Exports the constructed network graph to a GEXF (Graph Exchange XML Format) file, enabling further visualization and analysis in graph tools such as Gephi.
+
+- **Key Steps:**  
+  1. Extracts nodes and edges from the source dataset or graph object.
+  2. Structures the network data according to the GEXF specification.
+  3. Writes the resulting graph to a `.gexf` file (e.g., `all_workgroups_graph_sanitized.gexf`).
+  4. The exported file can be opened in Gephi or other compatible tools for interactive exploration.
+
+The GEXF-export script generates a network graph in the GEXF (Graph Exchange XML Format) file format. It extracts data about nodes (such as workgroups, users, or other entities) and their relationships (edges) from the source dataset, then structures this information according to the GEXF specification. The resulting .gexf file can be visualized and analyzed using graph analysis tools like Gephi. This allows users to explore the connections and structure of the network represented in
