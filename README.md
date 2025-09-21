@@ -52,9 +52,12 @@ $BROWSER graph2.png
 - **Key Steps:**  
   1. Downloads JSON data from a URL and normalizes it to a list of workgroups.
   2. Iterates through all workgroups, extracting and sanitizing relevant entities and relationships.
-  3. Adds nodes and edges for workgroups, meetings, people, documents, agenda items, actions, decisions, tags, and emotions.
-  4. Sanitizes all node and edge attributes to ensure compatibility with the GEXF format.
-  5. Exports the resulting graph to `all_workgroups_graph_sanitized.gexf`.
-  6. Optionally visualizes the graph in Python using Matplotlib.
+  3. Forces `meeting_node_id` to be unique by appending the top-level index when `workgroup_id` is missing or not unique.
+  4. Ensures all node IDs are strings for compatibility.
+  5. Adds nodes and edges for workgroups, meetings, people, documents, agenda items, actions, decisions, tags, and emotions.
+  6. Sanitizes all node and edge attributes to ensure compatibility with the GEXF format.
+  7. Prints counts of nodes and edges before and after sanitization, and prints sample node IDs so you can confirm the graph structure.
+  8. Exports the resulting graph to `all_workgroups_graph_sanitized.gexf`.
+  9. Optionally visualizes the graph in Python using Matplotlib.
 
 The script prints diagnostic information about the graph structure and attribute types before and after sanitization, ensuring the exported GEXF file is valid and ready for use in Gephi or other graph analysis tools.
