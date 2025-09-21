@@ -4,7 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # --- CONFIG ---
-url = url = "https://raw.githubusercontent.com/SingularityNET-Archive/SingularityNET-Archive/refs/heads/main/Data/Snet-Ambassador-Program/Meeting-Summaries/2025/meeting-summaries-array.json"  # Replace with your URL
+url = "https://raw.githubusercontent.com/SingularityNET-Archive/SingularityNET-Archive/refs/heads/main/Data/Snet-Ambassador-Program/Meeting-Summaries/2025/meeting-summaries-array.json"  # Replace with your URL
 output_gexf = "all_workgroups_graph_sanitized.gexf"
 
 # --- 1. Fetch remote JSON safely ---
@@ -21,6 +21,10 @@ elif isinstance(data, list):
     workgroups = data
 else:
     raise Exception("Unexpected JSON structure; expected dict or list")
+
+# --- NEW: Count top-level values ---
+top_level_count = len(workgroups)
+print(f"🔹 Number of top-level workgroup entries: {top_level_count}")
 
 # --- 2. Helper functions ---
 def safe_get(d, keys, default=None):
