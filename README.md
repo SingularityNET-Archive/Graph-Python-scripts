@@ -44,14 +44,17 @@ $BROWSER graph2.png
 ```
 
 ### GEXF-Export Script
+### GEXF-export.py
 
 - **Purpose:**  
-  Exports the constructed network graph to a GEXF (Graph Exchange XML Format) file, enabling further visualization and analysis in graph tools such as Gephi.
+  Fetches all meeting summaries from a remote JSON file, builds a comprehensive directed graph of workgroups, meetings, people, documents, agenda items, actions, decisions, tags, and emotions, and exports the graph to a GEXF (Graph Exchange XML Format) file for further visualization and analysis in tools such as Gephi.
 
 - **Key Steps:**  
-  1. Extracts nodes and edges from the source dataset or graph object.
-  2. Structures the network data according to the GEXF specification.
-  3. Writes the resulting graph to a `.gexf` file (e.g., `all_workgroups_graph_sanitized.gexf`).
-  4. The exported file can be opened in Gephi or other compatible tools for interactive exploration.
+  1. Downloads JSON data from a URL and normalizes it to a list of workgroups.
+  2. Iterates through all workgroups, extracting and sanitizing relevant entities and relationships.
+  3. Adds nodes and edges for workgroups, meetings, people, documents, agenda items, actions, decisions, tags, and emotions.
+  4. Sanitizes all node and edge attributes to ensure compatibility with the GEXF format.
+  5. Exports the resulting graph to `all_workgroups_graph_sanitized.gexf`.
+  6. Optionally visualizes the graph in Python using Matplotlib.
 
-The GEXF-export script generates a network graph in the GEXF (Graph Exchange XML Format) file format. It extracts data about nodes (such as workgroups, users, or other entities) and their relationships (edges) from the source dataset, then structures this information according to the GEXF specification. The resulting .gexf file can be visualized and analyzed using graph analysis tools like Gephi. This allows users to explore the connections and structure of the network represented in in the data.
+The script prints diagnostic information about the graph structure and attribute types before and after sanitization, ensuring the exported GEXF file is valid and ready for use in Gephi or other graph analysis tools.
