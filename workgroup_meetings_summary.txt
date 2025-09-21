@@ -2,147 +2,147 @@ Workgroup Counts and Meetings Summary:
 
 
 Archives Workgroup: 9 meetings
-  1. Unknown Date
-  2. Unknown Date
-  3. Unknown Date
-  4. Unknown Date
-  5. Unknown Date
-  6. Unknown Date
-  7. Unknown Date
-  8. Unknown Date
-  9. Unknown Date
+  1. 2025-01-08 - Monthly
+  2. 2025-02-05 - Monthly
+  3. 2025-03-05 - Monthly
+  4. 2025-04-02 - Monthly
+  5. 2025-05-07 - Weekly
+  6. 2025-06-04 - Monthly
+  7. 2025-07-09 - Monthly
+  8. 2025-08-06 - Monthly
+  9. 2025-09-17 - Monthly
 
 Governance Workgroup: 47 meetings
-  1. Unknown Date
-  2. Unknown Date
-  3. Unknown Date
-  4. Unknown Date
-  5. Unknown Date
-  6. Unknown Date
-  7. Unknown Date
-  8. Unknown Date
-  9. Unknown Date
-  10. Unknown Date
-  11. Unknown Date
-  12. Unknown Date
-  13. Unknown Date
-  14. Unknown Date
-  15. Unknown Date
-  16. Unknown Date
-  17. Unknown Date
-  18. Unknown Date
-  19. Unknown Date
-  20. Unknown Date
-  21. Unknown Date
-  22. Unknown Date
-  23. Unknown Date
-  24. Unknown Date
-  25. Unknown Date
-  26. Unknown Date
-  27. Unknown Date
-  28. Unknown Date
-  29. Unknown Date
-  30. Unknown Date
-  31. Unknown Date
-  32. Unknown Date
-  33. Unknown Date
-  34. Unknown Date
-  35. Unknown Date
-  36. Unknown Date
-  37. Unknown Date
-  38. Unknown Date
-  39. Unknown Date
-  40. Unknown Date
-  41. Unknown Date
-  42. Unknown Date
-  43. Unknown Date
-  44. Unknown Date
-  45. Unknown Date
-  46. Unknown Date
-  47. Unknown Date
+  1. 2025-01-07 - Weekly
+  2. 2025-01-09 - Weekly
+  3. 2025-01-14 - Weekly
+  4. 2025-01-30 - Weekly
+  5. 2025-02-04 - Weekly
+  6. 2025-02-06 - Weekly
+  7. 2025-02-11 - Weekly
+  8. 2025-02-18 - Weekly
+  9. 2025-01-23 - Weekly
+  10. 2025-02-20 - Weekly
+  11. 2025-03-04 - Weekly
+  12. 2025-03-06 - Weekly
+  13. 2025-03-18 - Weekly
+  14. 2025-03-20 - Weekly
+  15. 2025-03-25 - Weekly
+  16. 2025-04-01 - Weekly
+  17. 2025-04-03 - Weekly
+  18. 2025-03-27 - Weekly
+  19. 2025-04-08
+  20. 2025-05-01 - Weekly
+  21. 2025-05-15 - Weekly
+  22. 2025-04-22 - Weekly
+  23. 2025-04-17 - Weekly
+  24. 2025-04-24 - Weekly
+  25. 2025-04-29 - Weekly
+  26. 2025-05-06 - Weekly
+  27. 2025-05-08 - Weekly
+  28. 2025-05-20 - Weekly
+  29. 2025-05-13 - Weekly
+  30. 2025-05-22 - Weekly
+  31. 2025-05-12 - Monthly
+  32. 2025-05-27 - Weekly
+  33. 2025-05-29 - Weekly
+  34. 2025-06-03 - Weekly
+  35. 2025-06-05 - Weekly
+  36. 2025-06-10 - Weekly
+  37. 2025-06-12 - Weekly
+  38. 2025-06-17 - Weekly
+  39. 2025-06-19 - Weekly
+  40. 2025-06-24 - Weekly
+  41. 2025-06-26 - Weekly
+  42. 2025-04-15 - Weekly
+  43. 2025-04-10 - Weekly
+  44. 2025-07-03 - Weekly
+  45. 2025-07-17 - Weekly
+  46. 2025-09-04 - Weekly
+  47. 2025-08-26 - Weekly
 
 Education Workgroup: 8 meetings
-  1. Unknown Date
-  2. Unknown Date
-  3. Unknown Date
-  4. Unknown Date
-  5. Unknown Date
-  6. Unknown Date
-  7. Unknown Date
-  8. Unknown Date
+  1. 2025-01-08 - Weekly
+  2. 2025-04-09 - Weekly
+  3. 2025-04-16 - Weekly
+  4. 2025-04-23 - Weekly
+  5. 2025-05-21 - Weekly
+  6. 2025-05-28 - Weekly
+  7. 2025-05-07 - Weekly
+  8. 2025-04-30 - Weekly
 
 AI Sandbox/Think-tank: 9 meetings
-  1. Unknown Date
-  2. Unknown Date
-  3. Unknown Date
-  4. Unknown Date
-  5. Unknown Date
-  6. Unknown Date
-  7. Unknown Date
-  8. Unknown Date
-  9. Unknown Date
+  1. 2025-01-09 - Sandbox
+  2. 2025-04-10 - Sandbox
+  3. 2025-04-03 - Sandbox
+  4. 2025-05-08 - Weekly
+  5. 2025-04-24 - Weekly
+  6. 2025-05-01 - Weekly
+  7. 2025-05-15 - Weekly
+  8. 2025-05-22 - Weekly
+  9. 2025-05-29 - Weekly
 
 Video Workgroup: 1 meetings
-  1. Unknown Date
+  1. 2025-01-10 - Weekly
 
 Marketing Guild: 10 meetings
-  1. Unknown Date
-  2. Unknown Date
-  3. Unknown Date
-  4. Unknown Date
-  5. Unknown Date
-  6. Unknown Date
-  7. Unknown Date
-  8. Unknown Date
-  9. Unknown Date
-  10. Unknown Date
+  1. 2025-01-10 - Weekly
+  2. 2025-04-04 - Weekly
+  3. 2025-04-11 - Weekly
+  4. 2025-04-18 - Weekly
+  5. 2025-04-25 - Weekly
+  6. 2025-05-02 - Weekly
+  7. 2025-05-09 - Weekly
+  8. 2025-05-16 - Weekly
+  9. 2025-05-23 - Weekly
+  10. 2025-05-30 - Weekly
 
 AI Ethics WG: 8 meetings
-  1. Unknown Date
-  2. Unknown Date
-  3. Unknown Date
-  4. Unknown Date
-  5. Unknown Date
-  6. Unknown Date
-  7. Unknown Date
-  8. Unknown Date
+  1. 2025-02-03 - Weekly
+  2. 2025-01-13 - Monthly
+  3. 2025-04-07 - Monthly
+  4. 2025-05-12 - Monthly
+  5. 2025-06-02 - Monthly
+  6. 2025-07-07 - Monthly
+  7. 2025-09-01 - Weekly
+  8. 2025-03-03 - Weekly
 
 WG Sync Call: 5 meetings
-  1. Unknown Date
-  2. Unknown Date
-  3. Unknown Date
-  4. Unknown Date
-  5. Unknown Date
+  1. 2025-02-27 - Monthly
+  2. 2025-04-07 - Monthly
+  3. 2025-01-30
+  4. 2025-06-30 - Monthly
+  5. 2025-09-15 - Monthly
 
 Knowledge Base Workgroup: 5 meetings
-  1. Unknown Date
-  2. Unknown Date
-  3. Unknown Date
-  4. Unknown Date
-  5. Unknown Date
+  1. 2025-01-13 - Biweekly
+  2. 2025-01-27 - Biweekly
+  3. 2025-02-17 - Biweekly
+  4. 2025-04-15 - Monthly
+  5. 2025-06-13 - Monthly
 
 Writers Workgroup: 2 meetings
-  1. Unknown Date
-  2. Unknown Date
+  1. 2025-04-21 - Weekly
+  2. 2025-03-21 - Weekly
 
 Research and Development Guild: 2 meetings
-  1. Unknown Date
-  2. Unknown Date
+  1. 2025-04-02 - Weekly
+  2. 2025-05-07 - Weekly
 
 Onboarding Workgroup: 2 meetings
-  1. Unknown Date
-  2. Unknown Date
+  1. 2025-04-03 - Biweekly
+  2. 2025-05-01 - Monthly
 
 African Guild: 2 meetings
-  1. Unknown Date
-  2. Unknown Date
+  1. 2025-04-10 - Biweekly
+  2. 2025-05-08 - Weekly
 
 Treasury Automation WG: 1 meetings
-  1. Unknown Date
+  1. 2025-05-06 - Weekly
 
 Gamers Guild: 2 meetings
-  1. Unknown Date
-  2. Unknown Date
+  1. 2025-04-25 - Monthly
+  2. 2025-05-24 - Monthly
 
 Strategy Guild: 1 meetings
-  1. Unknown Date
+  1. 2025-05-26 - Monthly
