@@ -4,6 +4,7 @@ import networkx as nx
 from itertools import combinations
 from collections import Counter
 from datetime import datetime
+import statistics
 
 
 def load_json_remote(url):
@@ -14,17 +15,13 @@ def load_json_remote(url):
 
 
 def find_field_combinations(obj):
-    """
-    Recursively extract all field (key) names and record their co-occurrence within objects.
-    Returns a list of sets — each set contains field names that appear together.
-    """
+    """Recursively extract co-occurring field names (keys)."""
     cooccurrences = []
 
     if isinstance(obj, dict):
         keys = set(obj.keys())
         if len(keys) > 1:
             cooccurrences.append(keys)
-
         for value in obj.values():
             cooccurrences.extend(find_field_combinations(value))
 
@@ -35,11 +32,10 @@ def find_field_combinations(obj):
     return cooccurrences
 
 
-def build_field_graph(meetings):
-    """Build a co-occurrence graph where nodes are JSON field names."""
+def build_field_graph(data):
+    """Build a graph where nodes = field names and edges = co-occurrence in same object."""
     G = nx.Graph()
-
-    cooccurrence_sets = find_field_combinations(meetings)
+    cooccurrence_sets = find_field_combinations(data)
 
     for field_set in cooccurrence_sets:
         for field in field_set:
@@ -49,7 +45,6 @@ def build_field_graph(meetings):
                 G[u][v]["weight"] += 1
             else:
                 G.add_edge(u, v, weight=1)
-
     return G
 
 
@@ -60,8 +55,48 @@ def degree_analysis(G):
     return degree_dict, degree_counts
 
 
+def interpret_degree_results(degree_dict):
+    """Generate a narrative interpretation of the degree analysis."""
+    if not degree_dict:
+        return "No fields found to analyze."
+
+    degrees = list(degree_dict.values())
+    avg_deg = statistics.mean(degrees)
+    max_deg = max(degrees)
+    min_deg = min(degrees)
+
+    sorted_fields = sorted(degree_dict.items(), key=lambda x: x[1], reverse=True)
+    n = len(sorted_fields)
+    top_20 = sorted_fields[: max(1, n // 5)]
+    bottom_20 = sorted_fields[-max(1, n // 5) :]
+
+    core_fields = [f"{name} ({deg})" for name, deg in top_20]
+    peripheral_fields = [f"{name} ({deg})" for name, deg in bottom_20]
+
+    text = [
+        "## Interpretation of Degree Results\n",
+        "The **degree** of a field represents how many other fields it co-occurs with "
+        "across the dataset. Fields with high degree are more central — they tend to appear "
+        "together with many other fields, indicating they may be *core schema components*. "
+        "Fields with low degree are more isolated or specialized.\n",
+        f"- **Average degree:** {avg_deg:.2f}\n"
+        f"- **Maximum degree:** {max_deg}\n"
+        f"- **Minimum degree:** {min_deg}\n\n",
+        "### Core (Highly Connected) Fields\n",
+        ", ".join(core_fields) + "\n\n",
+        "### Peripheral (Low-Connectivity) Fields\n",
+        ", ".join(peripheral_fields) + "\n\n",
+        "_Interpretation:_\n",
+        "The core fields likely represent the fundamental metadata elements that occur in nearly every record "
+        "(e.g., identifiers, titles, timestamps). The peripheral fields may represent optional or contextual data "
+        "used only in specific cases or submodules of the schema."
+    ]
+
+    return "\n".join(text)
+
+
 def write_markdown_report(degree_dict, degree_counts, output_file):
-    """Write results to a Markdown file."""
+    """Write results to a Markdown file, including interpretation."""
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(f"# JSON Field Degree Analysis Report\n")
@@ -73,7 +108,7 @@ def write_markdown_report(degree_dict, degree_counts, output_file):
         f.write(f"- Maximum Degree: {max(degree_dict.values()) if degree_dict else 0}\n")
         f.write(f"- Minimum Degree: {min(degree_dict.values()) if degree_dict else 0}\n\n")
 
-        # Top 15 fields by degree
+        # Top fields
         f.write("## Top 15 JSON Fields by Degree\n")
         f.write("| Rank | Field Name | Degree |\n|------|-------------|---------|\n")
         for i, (field, deg) in enumerate(sorted(degree_dict.items(), key=lambda x: x[1], reverse=True)[:15], 1):
@@ -85,8 +120,14 @@ def write_markdown_report(degree_dict, degree_counts, output_file):
         f.write("| Degree | Count of Fields |\n|---------|-----------------|\n")
         for degree, count in sorted(degree_counts.items()):
             f.write(f"| {degree} | {count} |\n")
+        f.write("\n")
 
-    print(f"✅ Markdown report saved to: {output_file}")
+        # Interpretation
+        interpretation = interpret_degree_results(degree_dict)
+        f.write(interpretation)
+        f.write("\n")
+
+    print(f"✅ Markdown report with interpretation saved to: {output_file}")
 
 
 def main():
@@ -95,7 +136,7 @@ def main():
         "SingularityNET-Archive/refs/heads/main/Data/Snet-Ambassador-Program/"
         "Meeting-Summaries/2025/meeting-summaries-array.json"
     )
-    output_file = "degree_analysis_by_field.md"
+    output_file = "degree_analysis_by_field_with_interpretation.md"
 
     print("📡 Fetching JSON from remote source...")
     data = load_json_remote(url)
@@ -116,5 +157,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
