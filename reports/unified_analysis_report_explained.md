@@ -1,5 +1,5 @@
 # Unified Graph Analysis Report
-**Generated on:** 2025-10-15 10:00:54
+**Generated on:** 2025-10-15 10:04:29
 
 ## Summary
 These are high-level counts of nodes/edges for each graph constructed during analysis.
@@ -24,11 +24,6 @@ These are the people connected to the most unique others across meetings.
 | 3 | advanceameyaw | 87 |
 | 4 | CallyFromAuron | 81 |
 | 5 | Kateri | 81 |
-| 6 | UKnowZork | 79 |
-| 7 | Sucre n Spice | 78 |
-| 8 | esewilliams | 76 |
-| 9 | LordKizzy | 76 |
-| 10 | Jeffrey Ndarake | 73 |
 
 ### Degree Distribution
 How many people fall into each degree (number of unique co-attendees) bucket.
@@ -96,16 +91,11 @@ These fields co-occur with the largest variety of other fields.
 
 | Rank | Field | Degree |
 |------|-------|--------|
-| 1 | documenter | 11 |
-| 2 | typeOfMeeting | 11 |
-| 3 | purpose | 11 |
-| 4 | workingDocs | 11 |
-| 5 | host | 11 |
-| 6 | date | 11 |
-| 7 | peoplePresent | 11 |
-| 8 | status | 11 |
-| 9 | meetingVideoLink | 10 |
-| 10 | meetingInfo | 9 |
+| 1 | peoplePresent | 11 |
+| 2 | documenter | 11 |
+| 3 | workingDocs | 11 |
+| 4 | purpose | 11 |
+| 5 | typeOfMeeting | 11 |
 
 ### Degree Distribution
 How many fields have each degree (number of distinct co-occurring fields).
@@ -154,27 +144,22 @@ Parents that appear most often, suggesting common structural hubs.
 | 3 | `[10].agendaItems[0]` | 21 |
 | 4 | `[7].agendaItems[0]` | 19 |
 | 5 | `[17].agendaItems[0]` | 19 |
-| 6 | `[22].meetingInfo` | 19 |
-| 7 | `[23].meetingInfo` | 19 |
-| 8 | `[101].agendaItems[0]` | 19 |
-| 9 | `[11].agendaItems[0]` | 18 |
-| 10 | `[37].agendaItems[0]` | 18 |
 
 ## Field Centrality (Co-occurrence)
 Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).
 
 | Rank | Field | Degree | Betweenness | Closeness | Eigenvector |
 |------|-------|--------|-------------|-----------|------------|
-| 1 | documenter | 0.256 | 0.001 | 0.256 | 0.309 |
-| 2 | typeOfMeeting | 0.256 | 0.001 | 0.256 | 0.309 |
-| 3 | purpose | 0.256 | 0.001 | 0.256 | 0.309 |
-| 4 | workingDocs | 0.256 | 0.001 | 0.256 | 0.309 |
-| 5 | host | 0.256 | 0.001 | 0.256 | 0.309 |
+| 1 | peoplePresent | 0.256 | 0.001 | 0.256 | 0.309 |
+| 2 | documenter | 0.256 | 0.001 | 0.256 | 0.309 |
+| 3 | workingDocs | 0.256 | 0.001 | 0.256 | 0.309 |
+| 4 | purpose | 0.256 | 0.001 | 0.256 | 0.309 |
+| 5 | typeOfMeeting | 0.256 | 0.001 | 0.256 | 0.309 |
 | 6 | date | 0.256 | 0.001 | 0.256 | 0.309 |
-| 7 | peoplePresent | 0.256 | 0.001 | 0.256 | 0.309 |
+| 7 | host | 0.256 | 0.001 | 0.256 | 0.309 |
 | 8 | status | 0.256 | 0.030 | 0.256 | 0.000 |
 | 9 | meetingVideoLink | 0.233 | 0.000 | 0.234 | 0.290 |
-| 10 | meetingInfo | 0.209 | 0.000 | 0.209 | 0.000 |
+| 10 | type | 0.209 | 0.000 | 0.209 | 0.000 |
 
 ## Clustering (Field Co-occurrence Graph)
 Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).
@@ -186,16 +171,11 @@ Fields whose immediate neighborhoods are most tightly interlinked.
 
 | Rank | Field | Clustering |
 |------|-------|------------|
-| 1 | meetingInfo | 1.000 |
-| 2 | tags | 1.000 |
-| 3 | canceledSummary | 1.000 |
-| 4 | workgroup_id | 1.000 |
-| 5 | workgroup | 1.000 |
-| 6 | agendaItems | 1.000 |
-| 7 | type | 1.000 |
-| 8 | noSummaryGiven | 1.000 |
-| 9 | timestampedVideo | 1.000 |
-| 10 | dueDate | 1.000 |
+| 1 | type | 1.000 |
+| 2 | meetingInfo | 1.000 |
+| 3 | workgroup | 1.000 |
+| 4 | tags | 1.000 |
+| 5 | canceledSummary | 1.000 |
 
 ## Connected Components (Field Co-occurrence Graph)
 Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.
@@ -203,14 +183,9 @@ Components are groups of fields that are all reachable from each other; multiple
 - Number of Components: 6
 - Component Sizes (top 10): [12, 12, 10, 4, 4, 2]
 - Sample of Largest Component Nodes (top 10):
-  - timestampedVideo
-  - documenter
   - otherMediaLink
-  - mediaLink
-  - typeOfMeeting
   - peoplePresent
+  - documenter
   - workingDocs
-  - host
-  - date
-  - miroBoardLink
+  - mediaLink
 

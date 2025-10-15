@@ -347,7 +347,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--output",
-        default="reports/unified_analysis_report.md",
+        default="reports/unified_analysis_report_explained.md",
         help="Markdown report output path",
     )
     parser.add_argument(
