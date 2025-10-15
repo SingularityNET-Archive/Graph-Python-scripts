@@ -39,58 +39,6 @@ def _truncate_label(text: str, max_len: int = 80) -> str:
     return safe if len(safe) <= max_len else (safe[: max_len - 1] + "…")
 
 
-# ---------------- Degree (Co-attendance) ----------------
-
-def extract_participants(record: Dict[str, Any]) -> List[str]:
-    """Extract likely participants from a meeting record.
-    - peoplePresent: comma-separated string under meetingInfo
-    - host, documenter: added if present (deduped)
-    """
-    participants: List[str] = []
-    meeting_info = {}
-    if isinstance(record, dict):
-        meeting_info = record.get("meetingInfo", {}) or {}
-    # peoplePresent as comma-separated string
-    pp = meeting_info.get("peoplePresent", "")
-    if isinstance(pp, str) and pp.strip():
-        participants.extend([p.strip() for p in pp.split(",") if p.strip()])
-    # host/documenter as single names
-    for key in ("host", "documenter"):
-        val = meeting_info.get(key)
-        if isinstance(val, str) and val.strip():
-            participants.append(val.strip())
-    # dedupe while preserving order
-    seen = set()
-    deduped: List[str] = []
-    for p in participants:
-        if p not in seen:
-            seen.add(p)
-            deduped.append(p)
-    return deduped
-
-
-def build_coattendance_graph(records: Iterable[Any]) -> nx.Graph:
-    G = nx.Graph()
-    for rec in records:
-        participants = extract_participants(rec)
-        if len(participants) < 2:
-            continue
-        for p in participants:
-            G.add_node(p)
-        for u, v in combinations(participants, 2):
-            if G.has_edge(u, v):
-                G[u][v]["weight"] += 1
-            else:
-                G.add_edge(u, v, weight=1)
-    return G
-
-
-def degree_analysis(G: nx.Graph) -> Tuple[Dict[str, int], Counter]:
-    degree_dict = dict(G.degree())
-    degree_counts = Counter(degree_dict.values())
-    return degree_dict, degree_counts
-
-
 # ---------------- JSON Path Structure ----------------
 
 def extract_json_paths(obj: Any, prefix: str = "") -> List[str]:
@@ -137,7 +85,7 @@ def build_path_graph(paths: List[str]) -> nx.DiGraph:
     return G
 
 
-# ---------------- Field Co-occurrence (Centrality, Clustering, Components) ----------------
+# ---------------- Field Co-occurrence (Degree, Centrality, Clustering, Components) ----------------
 
 def find_field_combinations(obj: Any) -> List[set]:
     results: List[set] = []
@@ -165,6 +113,12 @@ def build_field_graph(data: Any) -> nx.Graph:
             else:
                 G.add_edge(u, v, weight=1)
     return G
+
+
+def field_degree(G: nx.Graph) -> Tuple[Dict[str, int], Counter]:
+    degree_dict = dict(G.degree())
+    degree_counts = Counter(degree_dict.values())
+    return degree_dict, degree_counts
 
 
 def compute_centrality_measures(G: nx.Graph) -> Dict[str, Dict[str, float]]:
@@ -207,9 +161,9 @@ def connected_components_info(G: nx.Graph, top: int) -> Dict[str, Any]:
 def write_report(
     output_file: str,
     summary: Dict[str, Any],
-    degree: Tuple[Dict[str, int], Counter],
-    degree_top: List[Tuple[str, int]],
-    degree_dist: List[Tuple[int, int]],
+    field_deg: Tuple[Dict[str, int], Counter],
+    field_top: List[Tuple[str, int]],
+    field_dist: List[Tuple[int, int]],
     path_info: Dict[str, Any],
     parent_top: List[Tuple[str, int]],
     centrality: Dict[str, Dict[str, float]],
@@ -228,17 +182,17 @@ def write_report(
             f.write(f"- {k}: {v}\n")
         f.write("\n")
 
-        # Degree Analysis
-        f.write("## Degree (Co-attendance) Analysis\n")
-        f.write("### Top Nodes by Degree\n")
-        f.write("| Rank | Node | Degree |\n|------|------|--------|\n")
-        for i, (node, deg) in enumerate(degree_top, 1):
+        # JSON Field Degree Analysis
+        f.write("## JSON Field Degree Analysis\n")
+        f.write("### Top Fields by Degree\n")
+        f.write("| Rank | Field | Degree |\n|------|-------|--------|\n")
+        for i, (node, deg) in enumerate(field_top, 1):
             label = _truncate_label(node, 80)
             f.write(f"| {i} | {label} | {deg} |\n")
         f.write("\n")
         f.write("### Degree Distribution\n")
-        f.write("| Degree | Count of Nodes |\n|--------|-----------------|\n")
-        for d, c in degree_dist:
+        f.write("| Degree | Count of Fields |\n|--------|------------------|\n")
+        for d, c in field_dist:
             f.write(f"| {d} | {c} |\n")
         f.write("\n")
 
@@ -322,13 +276,6 @@ def main() -> None:
     args = parser.parse_args()
 
     data = load_json(args.input)
-    records = ensure_iterable_records(data)
-
-    # Degree / co-attendance graph (participants-only)
-    G_attend = build_coattendance_graph(records)
-    degree_dict, degree_counts = degree_analysis(G_attend)
-    degree_top = sorted(degree_dict.items(), key=lambda x: x[1], reverse=True)[: args.limit_top]
-    degree_dist = sorted(degree_counts.items(), key=lambda x: x[0])
 
     # Path analysis
     all_paths = extract_json_paths(data)
@@ -338,6 +285,13 @@ def main() -> None:
 
     # Field co-occurrence graph
     G_fields = build_field_graph(data)
+
+    # Field degree (JSON Field Degree Analysis)
+    fdeg_dict, fdeg_counts = field_degree(G_fields)
+    field_top = sorted(fdeg_dict.items(), key=lambda x: x[1], reverse=True)[: args.limit_top]
+    field_dist = sorted(fdeg_counts.items(), key=lambda x: x[0])
+
+    # Centrality on field graph
     centrality = compute_centrality_measures(G_fields)
 
     # Clustering & components on field graph
@@ -345,8 +299,6 @@ def main() -> None:
     components = connected_components_info(G_fields, args.limit_top)
 
     summary = {
-        "Co-attendance graph (nodes)": len(G_attend.nodes),
-        "Co-attendance graph (edges)": len(G_attend.edges),
         "Path graph (nodes)": len(G_paths.nodes),
         "Path graph (edges)": len(G_paths.edges),
         "Field graph (nodes)": len(G_fields.nodes),
@@ -356,9 +308,9 @@ def main() -> None:
     write_report(
         output_file=args.output,
         summary=summary,
-        degree=(degree_dict, degree_counts),
-        degree_top=degree_top,
-        degree_dist=degree_dist,
+        field_deg=(fdeg_dict, fdeg_counts),
+        field_top=field_top,
+        field_dist=field_dist,
         path_info=pmetrics,
         parent_top=parent_top,
         centrality=centrality,
