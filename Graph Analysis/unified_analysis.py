@@ -233,19 +233,23 @@ def write_report(
 
         # Summary
         f.write("## Summary\n")
+        f.write("These are high-level counts of nodes/edges for each graph constructed during analysis.\n\n")
         for k, v in summary.items():
             f.write(f"- {k}: {v}\n")
         f.write("\n")
 
         # Participant-only Degree (Co-attendance)
         f.write("## Degree (Co-attendance) Analysis\n")
+        f.write("People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.\n\n")
         f.write("### Top Nodes by Degree\n")
+        f.write("These are the people connected to the most unique others across meetings.\n\n")
         f.write("| Rank | Node | Degree |\n|------|------|--------|\n")
         for i, (node, deg) in enumerate(attend_top, 1):
             label = _truncate_label(node, 80)
             f.write(f"| {i} | {label} | {deg} |\n")
         f.write("\n")
         f.write("### Degree Distribution\n")
+        f.write("How many people fall into each degree (number of unique co-attendees) bucket.\n\n")
         f.write("| Degree | Count of Nodes |\n|--------|-----------------|\n")
         for d, c in attend_dist:
             f.write(f"| {d} | {c} |\n")
@@ -253,13 +257,16 @@ def write_report(
 
         # JSON Field Degree Analysis
         f.write("## JSON Field Degree Analysis\n")
+        f.write("Fields are connected when they appear together inside the same JSON object; a field's degree is the number of distinct fields it co-occurs with.\n\n")
         f.write("### Top Fields by Degree\n")
+        f.write("These fields co-occur with the largest variety of other fields.\n\n")
         f.write("| Rank | Field | Degree |\n|------|-------|--------|\n")
         for i, (node, deg) in enumerate(field_top, 1):
             label = _truncate_label(node, 80)
             f.write(f"| {i} | {label} | {deg} |\n")
         f.write("\n")
         f.write("### Degree Distribution\n")
+        f.write("How many fields have each degree (number of distinct co-occurring fields).\n\n")
         f.write("| Degree | Count of Fields |\n|--------|------------------|\n")
         for d, c in field_dist:
             f.write(f"| {d} | {c} |\n")
@@ -267,14 +274,17 @@ def write_report(
 
         # Path Analysis
         f.write("## JSON Path Structure Analysis\n")
+        f.write("Each JSON path represents a unique nested route (keys/array indices); depth shows how deeply information is nested.\n\n")
         f.write(f"- Total Unique Paths: {path_info['total_paths']}\n")
         f.write(f"- Maximum Depth: {path_info['max_depth']}\n")
         f.write(f"- Average Depth: {path_info['avg_depth']:.2f}\n\n")
         f.write("### Deepest JSON Paths (sample)\n")
+        f.write("The deepest examples indicate where the data structure is most nested.\n\n")
         for p in path_info["deepest_paths"][:10]:
             f.write(f"- `{p}`\n")
         f.write("\n")
         f.write("### Most Common Parent Paths\n")
+        f.write("Parents that appear most often, suggesting common structural hubs.\n\n")
         f.write("| Rank | Parent Path | Count |\n|------|-------------|-------|\n")
         for i, (parent, cnt) in enumerate(parent_top, 1):
             f.write(f"| {i} | `{parent}` | {cnt} |\n")
@@ -282,6 +292,7 @@ def write_report(
 
         # Centrality
         f.write("## Field Centrality (Co-occurrence)\n")
+        f.write("Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).\n\n")
         metrics = centrality
         top_fields = sorted(metrics["degree"].keys(), key=lambda x: metrics["degree"][x], reverse=True)[:10]
         f.write("| Rank | Field | Degree | Betweenness | Closeness | Eigenvector |\n")
@@ -299,8 +310,10 @@ def write_report(
         # Clustering
         avg_clust, top_clust_nodes = clustering
         f.write("## Clustering (Field Co-occurrence Graph)\n")
+        f.write("Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).\n\n")
         f.write(f"- Average Clustering Coefficient: {avg_clust:.3f}\n\n")
         f.write("### Top Nodes by Clustering Coefficient\n")
+        f.write("Fields whose immediate neighborhoods are most tightly interlinked.\n\n")
         f.write("| Rank | Field | Clustering |\n|------|-------|------------|\n")
         for i, (node, val) in enumerate(top_clust_nodes, 1):
             f.write(f"| {i} | {node} | {val:.3f} |\n")
@@ -308,6 +321,7 @@ def write_report(
 
         # Connected Components
         f.write("## Connected Components (Field Co-occurrence Graph)\n")
+        f.write("Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.\n\n")
         f.write(f"- Number of Components: {components['component_count']}\n")
         f.write(f"- Component Sizes (top 10): {components['component_sizes'][:10]}\n")
         f.write("- Sample of Largest Component Nodes (top 10):\n")
