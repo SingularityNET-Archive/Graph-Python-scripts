@@ -1,5 +1,5 @@
 # Unified Graph Analysis Report
-**Generated on:** 2025-10-15 09:23:45
+**Generated on:** 2025-10-15 09:50:13
 
 ## Summary
 - Co-attendance graph (nodes): 126
@@ -80,6 +80,35 @@
 | 91 | 1 |
 | 95 | 1 |
 
+## JSON Field Degree Analysis
+### Top Fields by Degree
+| Rank | Field | Degree |
+|------|-------|--------|
+| 1 | typeOfMeeting | 11 |
+| 2 | date | 11 |
+| 3 | purpose | 11 |
+| 4 | workingDocs | 11 |
+| 5 | documenter | 11 |
+| 6 | peoplePresent | 11 |
+| 7 | host | 11 |
+| 8 | status | 11 |
+| 9 | meetingVideoLink | 10 |
+| 10 | canceledSummary | 9 |
+
+### Degree Distribution
+| Degree | Count of Fields |
+|--------|------------------|
+| 1 | 2 |
+| 2 | 2 |
+| 3 | 9 |
+| 4 | 4 |
+| 5 | 1 |
+| 7 | 2 |
+| 8 | 3 |
+| 9 | 12 |
+| 10 | 1 |
+| 11 | 8 |
+
 ## JSON Path Structure Analysis
 - Total Unique Paths: 6832
 - Maximum Depth: 6
@@ -114,16 +143,16 @@
 ## Field Centrality (Co-occurrence)
 | Rank | Field | Degree | Betweenness | Closeness | Eigenvector |
 |------|-------|--------|-------------|-----------|------------|
-| 1 | purpose | 0.256 | 0.001 | 0.256 | 0.309 |
-| 2 | workingDocs | 0.256 | 0.001 | 0.256 | 0.309 |
-| 3 | documenter | 0.256 | 0.001 | 0.256 | 0.309 |
-| 4 | peoplePresent | 0.256 | 0.001 | 0.256 | 0.309 |
-| 5 | date | 0.256 | 0.001 | 0.256 | 0.309 |
-| 6 | typeOfMeeting | 0.256 | 0.001 | 0.256 | 0.309 |
+| 1 | typeOfMeeting | 0.256 | 0.001 | 0.256 | 0.309 |
+| 2 | date | 0.256 | 0.001 | 0.256 | 0.309 |
+| 3 | purpose | 0.256 | 0.001 | 0.256 | 0.309 |
+| 4 | workingDocs | 0.256 | 0.001 | 0.256 | 0.309 |
+| 5 | documenter | 0.256 | 0.001 | 0.256 | 0.309 |
+| 6 | peoplePresent | 0.256 | 0.001 | 0.256 | 0.309 |
 | 7 | host | 0.256 | 0.001 | 0.256 | 0.309 |
 | 8 | status | 0.256 | 0.030 | 0.256 | 0.000 |
 | 9 | meetingVideoLink | 0.233 | 0.000 | 0.234 | 0.290 |
-| 10 | tags | 0.209 | 0.000 | 0.209 | 0.000 |
+| 10 | canceledSummary | 0.209 | 0.000 | 0.209 | 0.000 |
 
 ## Clustering (Field Co-occurrence Graph)
 - Average Clustering Coefficient: 0.882
@@ -131,29 +160,29 @@
 ### Top Nodes by Clustering Coefficient
 | Rank | Field | Clustering |
 |------|-------|------------|
-| 1 | tags | 1.000 |
-| 2 | workgroup | 1.000 |
-| 3 | noSummaryGiven | 1.000 |
-| 4 | workgroup_id | 1.000 |
-| 5 | agendaItems | 1.000 |
-| 6 | type | 1.000 |
-| 7 | meetingInfo | 1.000 |
-| 8 | canceledSummary | 1.000 |
+| 1 | canceledSummary | 1.000 |
+| 2 | workgroup_id | 1.000 |
+| 3 | meetingInfo | 1.000 |
+| 4 | workgroup | 1.000 |
+| 5 | noSummaryGiven | 1.000 |
+| 6 | tags | 1.000 |
+| 7 | agendaItems | 1.000 |
+| 8 | type | 1.000 |
 | 9 | timestampedVideo | 1.000 |
-| 10 | assignee | 1.000 |
+| 10 | text | 1.000 |
 
 ## Connected Components (Field Co-occurrence Graph)
 - Number of Components: 6
 - Component Sizes (top 10): [12, 12, 10, 4, 4, 2]
 - Sample of Largest Component Nodes (top 10):
-  - meetingVideoLink
   - mediaLink
-  - workingDocs
-  - timestampedVideo
-  - documenter
-  - otherMediaLink
-  - peoplePresent
+  - typeOfMeeting
   - date
+  - meetingVideoLink
   - miroBoardLink
-  - host
+  - purpose
+  - workingDocs
+  - otherMediaLink
+  - documenter
+  - timestampedVideo
 
