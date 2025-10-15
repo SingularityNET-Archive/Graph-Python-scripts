@@ -1,104 +1,58 @@
 # Graph-Python-scripts
 
-This repository contains Python scripts for parsing meeting summaries and visualizing them as directed graphs using NetworkX and Matplotlib, plus exporting to GEXF for use in Gephi.
+Scripts to fetch meeting summaries, generate graphs, and produce analysis reports.
 
-## Contents
-- `Scripts/Nodes-Edges.py`: Build a directed graph from a single meeting summary and save `graph.png`.
-- `Scripts/Nodes-Edges2.py`: Build a directed graph from multiple meeting summaries and save `graph2.png`.
-- `Scripts/GEXF-export.py`: Build a comprehensive directed graph and export `all_workgroups_graph_sanitized.gexf`.
-- `Scripts/count.py`: Print top-level workgroup names from the remote JSON.
-- `Scripts/Import-JSON.py`: Generate `workgroup_meetings_summary.txt` with counts and meeting listings per workgroup.
-- `graph.png`, `graph2.png`: Example rendered graphs.
-- `Scripts/all_workgroups_graph_sanitized.gexf`: Example GEXF export ready for Gephi.
-
-## Prerequisites
-- Python 3.9+
-- Packages:
-  - `requests`
-  - `networkx`
-  - `matplotlib`
-
-Install packages:
-
+## Quickstart
+1. Create a virtual environment and install dependencies:
 ```bash
-pip install requests networkx matplotlib
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
-## Data Source
-All scripts fetch JSON from a public URL:
-
-- `https://raw.githubusercontent.com/SingularityNET-Archive/SingularityNET-Archive/refs/heads/main/Data/Snet-Ambassador-Program/Meeting-Summaries/2025/meeting-summaries-array.json`
-
-The scripts handle both top-level list and dict JSON structures.
-
-## Usage
-Run scripts from the project root or the `Scripts/` directory.
-
-### 1) Build a graph from a single meeting: `Scripts/Nodes-Edges.py`
-- Purpose: Parse one meeting object and produce a directed graph of relationships among workgroup, meeting, people, documents, agenda items, action items, decision items, tags, and emotions.
-- Output: Saves an image `graph.png` in the project root.
-
-Command:
+2. Run common tasks:
+- Single-meeting graph → saves `graph.png`:
 ```bash
 python Scripts/Nodes-Edges.py
 ```
-
-### 2) Build a graph from multiple meetings: `Scripts/Nodes-Edges2.py`
-- Purpose: Iterate all meetings/workgroups and build a combined directed graph.
-- Output: Saves `graph2.png` in the project root.
-
-Command:
+- Multi-meeting graph → saves `graph2.png`:
 ```bash
 python Scripts/Nodes-Edges2.py
 ```
-
-### 3) Export a GEXF for Gephi: `Scripts/GEXF-export.py`
-- Purpose: Build a comprehensive, sanitized directed graph across all workgroups and export to GEXF.
-- Output: Writes `Scripts/all_workgroups_graph_sanitized.gexf`.
-
-Notes:
-- Ensures node IDs are strings and unique.
-- Sanitizes node/edge attributes to primitive types for GEXF compatibility.
-- Emits diagnostics (counts, sample nodes) before/after sanitization.
-
-Command:
+- Export Gephi file → writes `Scripts/all_workgroups_graph_sanitized.gexf`:
 ```bash
 python Scripts/GEXF-export.py
 ```
-
-Open the GEXF in Gephi to explore the network.
-
-### 4) Quick inspection of workgroups: `Scripts/count.py`
-- Purpose: Print the `workgroup` field for each top-level item in the JSON (list or dict).
-
-Command:
-```bash
-python Scripts/count.py
-```
-
-### 5) Generate a text summary: `Scripts/Import-JSON.py`
-- Purpose: Create `workgroup_meetings_summary.txt` listing counts per workgroup and meeting info (date + title/type).
-- Output: `Scripts/workgroup_meetings_summary.txt`.
-
-Command:
+- Workgroup summary → writes `Scripts/workgroup_meetings_summary.txt`:
 ```bash
 python Scripts/Import-JSON.py
 ```
-
-## Outputs
-- `graph.png`: Single-meeting graph.
-- `graph2.png`: Multi-meeting graph.
-- `Scripts/all_workgroups_graph_sanitized.gexf`: GEXF for Gephi.
-- `Scripts/workgroup_meetings_summary.txt`: Human-readable summary.
-
-To preview generated images on macOS/Linux:
-
+- Degree (co-attendance) analysis → writes `Graph Analysis/Degree_Analysis/degree_analysis_report.md`:
 ```bash
-$BROWSER graph.png
-$BROWSER graph2.png
+python "Graph Analysis/Degree_Analysis/degree_analysis_to_md.py"
+```
+- JSON path structure report → writes `reports/path_analysis_report.md`:
+```bash
+python "Graph Analysis/Path_Analysis/path_analysis_report.py"
+```
+- Field centrality report → writes `reports/centrality_analysis_report.md`:
+```bash
+python "Graph Analysis/Path_Analysis/Centrality_Analysis/json_centrality_analysis.py"
 ```
 
-## Notes
-- All scripts are designed to run headlessly; graphs are saved to files instead of opening GUI windows.
-- The code uses defensive accessors and type checks to tolerate missing or differently shaped fields.
-- For reproducible layouts, the drawing functions use a fixed seed for `spring_layout` where applicable.
+## Repository Map
+- `Scripts/` — data fetching and basic graph generation. See `Scripts/README.md`.
+- `Graph Analysis/` — analysis utilities (degree, path, centrality). See `Graph Analysis/README.md`.
+- `reports/` — generated Markdown reports. See `reports/README.md`.
+
+## Data Source
+All scripts read from a shared public JSON:
+`https://raw.githubusercontent.com/SingularityNET-Archive/SingularityNET-Archive/refs/heads/main/Data/Snet-Ambassador-Program/Meeting-Summaries/2025/meeting-summaries-array.json`
+
+## Outputs
+- `graph.png`, `graph2.png` — rendered graphs
+- `Scripts/all_workgroups_graph_sanitized.gexf` — Gephi import
+- Markdown reports in `reports/`
+
+Notes: Scripts run headlessly and save files to disk; images can be opened via your OS default viewer.
