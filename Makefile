@@ -22,3 +22,6 @@ path-report:
 
 centrality-report:
 	$(PY) "Graph Analysis/Path_Analysis/Centrality_Analysis/json_centrality_analysis.py"
+
+unified-report:
+	$(PY) "Graph Analysis/unified_analysis.py" --output reports/unified_analysis_report.md

@@ -28,6 +28,10 @@ python Scripts/GEXF-export.py
 ```bash
 python Scripts/Import-JSON.py
 ```
+- Unified analysis report (degree, path, centrality, clustering, components) → writes `reports/unified_analysis_report.md`:
+```bash
+python "Graph Analysis/unified_analysis.py" --output reports/unified_analysis_report.md
+```
 - Degree (co-attendance) analysis → writes `Graph Analysis/Degree_Analysis/degree_analysis_report.md`:
 ```bash
 python "Graph Analysis/Degree_Analysis/degree_analysis_to_md.py"

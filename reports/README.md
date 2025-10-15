@@ -17,4 +17,11 @@ Generated Markdown reports and their sources.
 - `Graph Analysis/Degree_Analysis/degree_analysis_report.md`
   - Source: `Graph Analysis/Degree_Analysis/degree_analysis_to_md.py`
 
+- `unified_analysis_report.md`
+  - Source: `Graph Analysis/unified_analysis.py`
+  - Command:
+```bash
+python "Graph Analysis/unified_analysis.py" --output reports/unified_analysis_report.md
+```
+
 Re-run the corresponding scripts to regenerate any report.
