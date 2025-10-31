@@ -1,31 +1,72 @@
 // Network visualization
 let coattendanceNetwork = null;
+let initRetryCount = 0;
+const MAX_INIT_RETRIES = 10;
 
 function initCoattendanceNetwork() {
-    if (!coattendanceGraphData || !window.vis) {
-        return;
-    }
-    
-    const container = document.getElementById('coattendance-network');
-    if (!container) {
-        return;
-    }
-    
-    // Destroy existing network if it exists
-    if (coattendanceNetwork) {
-        coattendanceNetwork.destroy();
-    }
-    
-    // Calculate min/max values for scaling
-    const nodeValues = coattendanceGraphData.nodes.map(n => n.value || 1);
-    const maxNodeValue = Math.max(...nodeValues);
-    const minNodeValue = Math.min(...nodeValues);
-    const nodeValueRange = maxNodeValue - minNodeValue;
-    
-    const edgeValues = coattendanceGraphData.edges.map(e => e.value || 1);
-    const maxEdgeValue = Math.max(...edgeValues);
-    const minEdgeValue = Math.min(...edgeValues);
-    const edgeValueRange = maxEdgeValue - minEdgeValue;
+    try {
+        // Check prerequisites - wait for vis library if needed
+        if (!window.vis || !window.vis.Network || !window.vis.DataSet) {
+            if (initRetryCount < MAX_INIT_RETRIES) {
+                initRetryCount++;
+                console.warn(`vis-network library not loaded yet, retrying (${initRetryCount}/${MAX_INIT_RETRIES})...`);
+                setTimeout(() => {
+                    initCoattendanceNetwork();
+                }, 100);
+            } else {
+                console.error('vis-network library failed to load after multiple retries');
+            }
+            return;
+        }
+        
+        initRetryCount = 0; // Reset retry count on success
+        
+        if (!coattendanceGraphData) {
+            console.error('coattendanceGraphData not found');
+            return;
+        }
+        
+        if (!coattendanceGraphData.nodes || !Array.isArray(coattendanceGraphData.nodes) || coattendanceGraphData.nodes.length === 0) {
+            console.error('No nodes data available');
+            return;
+        }
+        
+        const container = document.getElementById('coattendance-network');
+        if (!container) {
+            console.error('Container element not found');
+            return;
+        }
+        
+        // Check if container is visible (not hidden by tab system)
+        const tabPane = container.closest('.tab-pane');
+        if (tabPane && !tabPane.classList.contains('active')) {
+            console.log('Container not visible, will initialize when tab is shown');
+            return;
+        }
+        
+        // Destroy existing network if it exists
+        if (coattendanceNetwork) {
+            coattendanceNetwork.destroy();
+            coattendanceNetwork = null;
+        }
+        
+        // Calculate min/max values for scaling
+        const nodeValues = coattendanceGraphData.nodes.map(n => n.value || 1);
+        if (nodeValues.length === 0) {
+            console.error('No node values available');
+            return;
+        }
+        
+        const maxNodeValue = Math.max(...nodeValues);
+        const minNodeValue = Math.min(...nodeValues);
+        const nodeValueRange = maxNodeValue - minNodeValue;
+        
+        const edgeValues = coattendanceGraphData.edges && Array.isArray(coattendanceGraphData.edges) 
+            ? coattendanceGraphData.edges.map(e => e.value || 1)
+            : [];
+        const maxEdgeValue = edgeValues.length > 0 ? Math.max(...edgeValues) : 1;
+        const minEdgeValue = edgeValues.length > 0 ? Math.min(...edgeValues) : 1;
+        const edgeValueRange = maxEdgeValue - minEdgeValue;
     
     // Scale nodes: size based on degree (value)
     // Node size between 10 and 50 pixels
@@ -47,7 +88,10 @@ function initCoattendanceNetwork() {
         const color = `rgb(${r}, ${g}, ${b})`;
         
         return {
-            ...node,
+            id: node.id,
+            label: node.label || node.id,
+            value: degree,
+            title: node.title || `${node.id} - Degree: ${degree}`,
             size: size,
             color: {
                 background: color,
@@ -73,7 +117,11 @@ function initCoattendanceNetwork() {
     });
     
     // Scale edges: width based on co-attendance frequency (weight)
-    const scaledEdges = coattendanceGraphData.edges.map(edge => {
+    const edgesData = coattendanceGraphData.edges && Array.isArray(coattendanceGraphData.edges) 
+        ? coattendanceGraphData.edges 
+        : [];
+    
+    const scaledEdges = edgesData.map(edge => {
         const weight = edge.value || 1;
         // Edge width between 1 and 5 pixels
         const width = edgeValueRange > 0
@@ -86,8 +134,11 @@ function initCoattendanceNetwork() {
             : 0.5;
         
         return {
-            ...edge,
+            from: edge.from,
+            to: edge.to,
+            value: weight,
             width: width,
+            title: edge.title || `Co-attended ${weight} time(s)`,
             color: {
                 color: `rgba(3, 102, 214, ${opacity})`,
                 highlight: '#0366d6',
@@ -96,9 +147,7 @@ function initCoattendanceNetwork() {
             smooth: {
                 type: 'continuous',
                 roundness: 0.5
-            },
-            selectionWidth: width * 2,
-            hoverWidth: width * 1.5
+            }
         };
     });
     
@@ -198,6 +247,15 @@ function initCoattendanceNetwork() {
     coattendanceNetwork.on('blurNode', function(params) {
         container.style.cursor = 'default';
     });
+    
+    console.log('Network visualization initialized successfully');
+    } catch (error) {
+        console.error('Error initializing network visualization:', error);
+        const container = document.getElementById('coattendance-network');
+        if (container) {
+            container.innerHTML = '<p style="color: red; padding: 20px;">Error loading network visualization. Please check the browser console for details.</p>';
+        }
+    }
 }
 
 // Tab switching functionality
@@ -240,10 +298,18 @@ function showTab(tabId) {
 
     // Initialize network visualization if showing co-attendance tab
     if (tabId === 'coattendance') {
-        // Small delay to ensure DOM is ready
+        // Delay to ensure DOM is ready and tab is visible
         setTimeout(() => {
             initCoattendanceNetwork();
-        }, 100);
+        }, 200);
+    } else if (coattendanceNetwork) {
+        // Destroy network when switching away from co-attendance tab
+        try {
+            coattendanceNetwork.destroy();
+            coattendanceNetwork = null;
+        } catch (e) {
+            console.error('Error destroying network:', e);
+        }
     }
 
     // Update URL hash without scrolling
