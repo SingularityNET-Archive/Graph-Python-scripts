@@ -1,19 +1,25 @@
-name: Generate and Deploy Pages
+name: Generate HTML Report
 
 on:
   push:
     branches: [ main ]
     paths:
       - 'Graph Analysis/unified_analysis.py'
-      - '.github/workflows/pages.yml'
+      - 'reports/unified_analysis_report_explained.md'
   workflow_dispatch:  # Allow manual trigger
 
+permissions:
+  contents: write
+
 jobs:
-  generate-and-deploy:
+  generate-html:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch full history for proper git operations
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -29,10 +35,16 @@ jobs:
       run: |
         python "Graph Analysis/unified_analysis.py" --html --html-output docs/index.html
     
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs
+    - name: Commit and push if changed
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        git add docs/index.html
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Auto-update HTML report [skip ci]"
+          git push origin HEAD:main
+        fi
 
