@@ -195,19 +195,23 @@ function initCoattendanceNetwork() {
         physics: {
             enabled: true,
             stabilization: {
-                iterations: 200,
-                updateInterval: 25,
+                iterations: 250,
+                updateInterval: 50,
                 onlyDynamicEdges: false,
                 fit: true
             },
             barnesHut: {
-                gravitationalConstant: -2000,
-                centralGravity: 0.3,
-                springLength: 100,
-                springConstant: 0.04,
-                damping: 0.09,
-                avoidOverlap: 0.5
-            }
+                gravitationalConstant: -3000,
+                centralGravity: 0.1,
+                springLength: 150,
+                springConstant: 0.02,
+                damping: 0.3,
+                avoidOverlap: 1.0
+            },
+            maxVelocity: 10,
+            minVelocity: 0.5,
+            solver: 'barnesHut',
+            timestep: 0.5
         },
         interaction: {
             hover: true,
@@ -229,6 +233,16 @@ function initCoattendanceNetwork() {
     
     coattendanceNetwork = new vis.Network(container, data, options);
     
+    // Disable physics after stabilization to prevent constant movement
+    coattendanceNetwork.once('stabilizationEnd', function() {
+        console.log('Network stabilized - disabling physics');
+        coattendanceNetwork.setOptions({
+            physics: {
+                enabled: false
+            }
+        });
+    });
+    
     // Add event listeners for better interactivity
     coattendanceNetwork.on('click', function(params) {
         if (params.nodes.length > 0) {
@@ -246,6 +260,11 @@ function initCoattendanceNetwork() {
     
     coattendanceNetwork.on('blurNode', function(params) {
         container.style.cursor = 'default';
+    });
+    
+    // Optionally re-enable physics temporarily when dragging nodes
+    coattendanceNetwork.on('dragStart', function(params) {
+        // Physics can remain disabled during drag for stability
     });
     
     console.log('Network visualization initialized successfully');
