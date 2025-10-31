@@ -414,7 +414,11 @@ def write_html_report(
                 <p class="explanation">People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.</p>
                 
                 <h3>Interactive Network Visualization</h3>
-                <p class="explanation">Visual representation of the co-attendance graph. Nodes represent people, edges represent co-attendance. Use mouse to zoom and pan. Hover over nodes to see details. Click and drag nodes to reposition.</p>
+                <p class="explanation">
+                    Visual representation of the co-attendance graph. <strong>Nodes represent people</strong>, with size and color indicating degree (number of connections) - larger, darker nodes have more connections. <strong>Edges represent co-attendance</strong> - thicker, darker edges indicate more frequent co-attendance. 
+                    <br><br>
+                    <strong>Interactions:</strong> Use mouse wheel to zoom, click and drag to pan, drag nodes to reposition. Hover over nodes or edges to see detailed information. Click on a node to highlight its connections.
+                </p>
                 <div id="coattendance-network"></div>
                 
                 <h3>Top Nodes by Degree</h3>
