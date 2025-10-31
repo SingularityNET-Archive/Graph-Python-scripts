@@ -21,7 +21,7 @@
     <div class="container">
         <header>
             <h1>Unified Graph Analysis Report</h1>
-            <p class="timestamp">Generated on: <strong>2025-10-31 19:48:50</strong></p>
+            <p class="timestamp">Generated on: <strong>2025-10-31 19:51:00</strong></p>
         </header>
 
         <div class="tabs">
@@ -55,7 +55,11 @@
                 <p class="explanation">People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.</p>
                 
                 <h3>Interactive Network Visualization</h3>
-                <p class="explanation">Visual representation of the co-attendance graph. Nodes represent people, edges represent co-attendance. Use mouse to zoom and pan. Hover over nodes to see details. Click and drag nodes to reposition.</p>
+                <p class="explanation">
+                    Visual representation of the co-attendance graph. <strong>Nodes represent people</strong>, with size and color indicating degree (number of connections) - larger, darker nodes have more connections. <strong>Edges represent co-attendance</strong> - thicker, darker edges indicate more frequent co-attendance. 
+                    <br><br>
+                    <strong>Interactions:</strong> Use mouse wheel to zoom, click and drag to pan, drag nodes to reposition. Hover over nodes or edges to see detailed information. Click on a node to highlight its connections.
+                </p>
                 <div id="coattendance-network"></div>
                 
                 <h3>Top Nodes by Degree</h3>
@@ -153,16 +157,16 @@
                         <tr><th>Rank</th><th>Field</th><th>Degree</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>1</td><td>workingDocs</td><td>11</td></tr>
-                        <tr><td>2</td><td>host</td><td>11</td></tr>
-                        <tr><td>3</td><td>purpose</td><td>11</td></tr>
+                        <tr><td>1</td><td>date</td><td>11</td></tr>
+                        <tr><td>2</td><td>workingDocs</td><td>11</td></tr>
+                        <tr><td>3</td><td>host</td><td>11</td></tr>
                         <tr><td>4</td><td>peoplePresent</td><td>11</td></tr>
-                        <tr><td>5</td><td>date</td><td>11</td></tr>
+                        <tr><td>5</td><td>typeOfMeeting</td><td>11</td></tr>
                         <tr><td>6</td><td>documenter</td><td>11</td></tr>
-                        <tr><td>7</td><td>typeOfMeeting</td><td>11</td></tr>
+                        <tr><td>7</td><td>purpose</td><td>11</td></tr>
                         <tr><td>8</td><td>status</td><td>11</td></tr>
                         <tr><td>9</td><td>meetingVideoLink</td><td>10</td></tr>
-                        <tr><td>10</td><td>type</td><td>9</td></tr>
+                        <tr><td>10</td><td>workgroup_id</td><td>9</td></tr>
                     </tbody>
                 </table>
 
@@ -244,16 +248,16 @@
                         <tr><th>Rank</th><th>Field</th><th>Degree</th><th>Betweenness</th><th>Closeness</th><th>Eigenvector</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>1</td><td>workingDocs</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>2</td><td>host</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>3</td><td>purpose</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>1</td><td>date</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>2</td><td>workingDocs</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>3</td><td>host</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
                         <tr><td>4</td><td>peoplePresent</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>5</td><td>date</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>5</td><td>typeOfMeeting</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
                         <tr><td>6</td><td>documenter</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>7</td><td>typeOfMeeting</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>7</td><td>purpose</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
                         <tr><td>8</td><td>status</td><td>0.256</td><td>0.030</td><td>0.256</td><td>0.000</td></tr>
                         <tr><td>9</td><td>meetingVideoLink</td><td>0.233</td><td>0.000</td><td>0.234</td><td>0.290</td></tr>
-                        <tr><td>10</td><td>type</td><td>0.209</td><td>0.000</td><td>0.209</td><td>0.000</td></tr>
+                        <tr><td>10</td><td>workgroup_id</td><td>0.209</td><td>0.000</td><td>0.209</td><td>0.000</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -272,16 +276,16 @@
                         <tr><th>Rank</th><th>Field</th><th>Clustering</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>1</td><td>type</td><td>1.000</td></tr>
-                        <tr><td>2</td><td>canceledSummary</td><td>1.000</td></tr>
-                        <tr><td>3</td><td>meetingInfo</td><td>1.000</td></tr>
-                        <tr><td>4</td><td>workgroup_id</td><td>1.000</td></tr>
-                        <tr><td>5</td><td>noSummaryGiven</td><td>1.000</td></tr>
+                        <tr><td>1</td><td>workgroup_id</td><td>1.000</td></tr>
+                        <tr><td>2</td><td>type</td><td>1.000</td></tr>
+                        <tr><td>3</td><td>noSummaryGiven</td><td>1.000</td></tr>
+                        <tr><td>4</td><td>canceledSummary</td><td>1.000</td></tr>
+                        <tr><td>5</td><td>agendaItems</td><td>1.000</td></tr>
                         <tr><td>6</td><td>tags</td><td>1.000</td></tr>
                         <tr><td>7</td><td>workgroup</td><td>1.000</td></tr>
-                        <tr><td>8</td><td>agendaItems</td><td>1.000</td></tr>
+                        <tr><td>8</td><td>meetingInfo</td><td>1.000</td></tr>
                         <tr><td>9</td><td>timestampedVideo</td><td>1.000</td></tr>
-                        <tr><td>10</td><td>text</td><td>1.000</td></tr>
+                        <tr><td>10</td><td>dueDate</td><td>1.000</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -299,15 +303,15 @@
                 <h3>Sample of Largest Component Nodes (top 10)</h3>
                 <ul class="component-list">
                     <li>miroBoardLink</li>
-                    <li>otherMediaLink</li>
-                    <li>workingDocs</li>
-                    <li>host</li>
-                    <li>purpose</li>
-                    <li>timestampedVideo</li>
-                    <li>meetingVideoLink</li>
-                    <li>mediaLink</li>
-                    <li>peoplePresent</li>
                     <li>date</li>
+                    <li>mediaLink</li>
+                    <li>workingDocs</li>
+                    <li>timestampedVideo</li>
+                    <li>host</li>
+                    <li>peoplePresent</li>
+                    <li>typeOfMeeting</li>
+                    <li>documenter</li>
+                    <li>meetingVideoLink</li>
                 </ul>
             </div>
         </div>
