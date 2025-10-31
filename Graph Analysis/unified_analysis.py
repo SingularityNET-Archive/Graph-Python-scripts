@@ -366,7 +366,6 @@ def write_html_report(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unified Graph Analysis Report</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -390,7 +389,6 @@ def write_html_report(
             <div id="summary" class="tab-pane active">
                 <h2>Summary</h2>
                 <p class="explanation">These are high-level counts of nodes/edges for each graph constructed during analysis.</p>
-                <div id="summary-chart"></div>
                 <ul class="summary-list">
 """)
         for k, v in summary.items():
@@ -405,7 +403,6 @@ def write_html_report(
                 
                 <h3>Top Nodes by Degree</h3>
                 <p class="explanation">These are the people connected to the most unique others across meetings.</p>
-                <div id="coattendance-top-chart"></div>
                 <table>
                     <thead>
                         <tr><th>Rank</th><th>Node</th><th>Degree</th></tr>
@@ -420,7 +417,6 @@ def write_html_report(
 
                 <h3>Degree Distribution</h3>
                 <p class="explanation">How many people fall into each degree (number of unique co-attendees) bucket.</p>
-                <div id="coattendance-dist-chart"></div>
                 <table>
                     <thead>
                         <tr><th>Degree</th><th>Count of Nodes</th></tr>
@@ -440,7 +436,6 @@ def write_html_report(
                 
                 <h3>Top Fields by Degree</h3>
                 <p class="explanation">These fields co-occur with the largest variety of other fields.</p>
-                <div id="field-degree-top-chart"></div>
                 <table>
                     <thead>
                         <tr><th>Rank</th><th>Field</th><th>Degree</th></tr>
@@ -455,7 +450,6 @@ def write_html_report(
 
                 <h3>Degree Distribution</h3>
                 <p class="explanation">How many fields have each degree (number of distinct co-occurring fields).</p>
-                <div id="field-degree-dist-chart"></div>
                 <table>
                     <thead>
                         <tr><th>Degree</th><th>Count of Fields</th></tr>
@@ -489,7 +483,6 @@ def write_html_report(
 
                 <h3>Most Common Parent Paths</h3>
                 <p class="explanation">Parents that appear most often, suggesting common structural hubs.</p>
-                <div id="path-structure-chart"></div>
                 <table>
                     <thead>
                         <tr><th>Rank</th><th>Parent Path</th><th>Count</th></tr>
@@ -507,7 +500,6 @@ def write_html_report(
                 <h2>Field Centrality (Co-occurrence)</h2>
                 <p class="explanation">Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).</p>
                 
-                <div id="centrality-chart"></div>
                 <table>
                     <thead>
                         <tr><th>Rank</th><th>Field</th><th>Degree</th><th>Betweenness</th><th>Closeness</th><th>Eigenvector</th></tr>
@@ -540,7 +532,6 @@ def write_html_report(
 
                 <h3>Top Nodes by Clustering Coefficient</h3>
                 <p class="explanation">Fields whose immediate neighborhoods are most tightly interlinked.</p>
-                <div id="clustering-chart"></div>
                 <table>
                     <thead>
                         <tr><th>Rank</th><th>Field</th><th>Clustering</th></tr>
@@ -558,7 +549,6 @@ def write_html_report(
                 <h2>Connected Components (Field Co-occurrence Graph)</h2>
                 <p class="explanation">Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.</p>
                 
-                <div id="components-chart"></div>
                 <ul class="summary-list">
                     <li><strong>Number of Components:</strong> """ + str(components['component_count']) + """</li>
                     <li><strong>Component Sizes (top 10):</strong> """ + str(components['component_sizes'][:10]) + """</li>
@@ -574,29 +564,6 @@ def write_html_report(
         </div>
     </div>
 
-    <script type="text/javascript">
-        // Embedded chart data
-        const chartData = {
-            summary: """ + json.dumps({k: v for k, v in summary.items()}) + """,
-            coattendanceTop: """ + json.dumps([{"node": _truncate_label(node, 80), "degree": deg} for node, deg in attend_top], ensure_ascii=False) + """,
-            coattendanceDist: """ + json.dumps([{"degree": d, "count": c} for d, c in attend_dist]) + """,
-            fieldDegreeTop: """ + json.dumps([{"field": _truncate_label(node, 80), "degree": deg} for node, deg in field_top], ensure_ascii=False) + """,
-            fieldDegreeDist: """ + json.dumps([{"degree": d, "count": c} for d, c in field_dist]) + """,
-            pathStructure: """ + json.dumps([{"parent": parent, "count": cnt} for parent, cnt in parent_top], ensure_ascii=False) + """,
-            centrality: """ + json.dumps([{
-                "field": node,
-                "degree": round(centrality["degree"].get(node, 0), 3),
-                "betweenness": round(centrality["betweenness"].get(node, 0), 3),
-                "closeness": round(centrality["closeness"].get(node, 0), 3),
-                "eigenvector": round(centrality["eigenvector"].get(node, 0), 3)
-            } for node in sorted(centrality["degree"].keys(), key=lambda x: centrality["degree"][x], reverse=True)[:10]], ensure_ascii=False) + """,
-            clustering: """ + json.dumps([{"field": node, "clustering": round(val, 3)} for node, val in top_clust_nodes], ensure_ascii=False) + """,
-            components: """ + json.dumps({
-                "count": components['component_count'],
-                "sizes": components['component_sizes'][:10]
-            }) + """
-        };
-    </script>
     <script src="script.js"></script>
 </body>
 </html>

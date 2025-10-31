@@ -184,16 +184,6 @@ code {
     color: #e83e8c;
 }
 
-/* Chart Containers */
-[id$="-chart"] {
-    margin: 20px 0;
-    width: 100%;
-    border: 1px solid #e1e4e8;
-    border-radius: 6px;
-    background-color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
     body {
