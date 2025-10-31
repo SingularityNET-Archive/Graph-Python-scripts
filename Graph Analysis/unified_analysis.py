@@ -338,6 +338,238 @@ def ensure_iterable_records(data: Any) -> List[Any]:
     return []
 
 
+# ---------------- HTML Report Writer ----------------
+
+def write_html_report(
+    output_file: str,
+    timestamp: str,
+    summary: Dict[str, Any],
+    attend_deg: Tuple[Dict[str, int], Counter],
+    attend_top: List[Tuple[str, int]],
+    attend_dist: List[Tuple[int, int]],
+    field_deg: Tuple[Dict[str, int], Counter],
+    field_top: List[Tuple[str, int]],
+    field_dist: List[Tuple[int, int]],
+    path_info: Dict[str, Any],
+    parent_top: List[Tuple[str, int]],
+    centrality: Dict[str, Dict[str, float]],
+    clustering: Tuple[float, List[Tuple[str, float]]],
+    components: Dict[str, Any],
+) -> None:
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write("""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Graph Analysis Report</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Unified Graph Analysis Report</h1>
+            <p class="timestamp">Generated on: <strong>""" + timestamp + """</strong></p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('summary')">Summary</button>
+            <button class="tab-button" onclick="showTab('coattendance')">Co-attendance Degree</button>
+            <button class="tab-button" onclick="showTab('field-degree')">Field Degree</button>
+            <button class="tab-button" onclick="showTab('path-structure')">Path Structure</button>
+            <button class="tab-button" onclick="showTab('centrality')">Centrality</button>
+            <button class="tab-button" onclick="showTab('clustering')">Clustering</button>
+            <button class="tab-button" onclick="showTab('components')">Components</button>
+        </div>
+
+        <div class="tab-content">
+            <!-- Summary Tab -->
+            <div id="summary" class="tab-pane active">
+                <h2>Summary</h2>
+                <p class="explanation">These are high-level counts of nodes/edges for each graph constructed during analysis.</p>
+                <ul class="summary-list">
+""")
+        for k, v in summary.items():
+            f.write(f"                    <li><strong>{k}:</strong> {v}</li>\n")
+        f.write("""                </ul>
+            </div>
+
+            <!-- Co-attendance Degree Tab -->
+            <div id="coattendance" class="tab-pane">
+                <h2>Degree (Co-attendance) Analysis</h2>
+                <p class="explanation">People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.</p>
+                
+                <h3>Top Nodes by Degree</h3>
+                <p class="explanation">These are the people connected to the most unique others across meetings.</p>
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Node</th><th>Degree</th></tr>
+                    </thead>
+                    <tbody>
+""")
+        for i, (node, deg) in enumerate(attend_top, 1):
+            label = _truncate_label(node, 80)
+            f.write(f"                        <tr><td>{i}</td><td>{label}</td><td>{deg}</td></tr>\n")
+        f.write("""                    </tbody>
+                </table>
+
+                <h3>Degree Distribution</h3>
+                <p class="explanation">How many people fall into each degree (number of unique co-attendees) bucket.</p>
+                <table>
+                    <thead>
+                        <tr><th>Degree</th><th>Count of Nodes</th></tr>
+                    </thead>
+                    <tbody>
+""")
+        for d, c in attend_dist:
+            f.write(f"                        <tr><td>{d}</td><td>{c}</td></tr>\n")
+        f.write("""                    </tbody>
+                </table>
+            </div>
+
+            <!-- Field Degree Tab -->
+            <div id="field-degree" class="tab-pane">
+                <h2>JSON Field Degree Analysis</h2>
+                <p class="explanation">Fields are connected when they appear together inside the same JSON object; a field's degree is the number of distinct fields it co-occurs with.</p>
+                
+                <h3>Top Fields by Degree</h3>
+                <p class="explanation">These fields co-occur with the largest variety of other fields.</p>
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Field</th><th>Degree</th></tr>
+                    </thead>
+                    <tbody>
+""")
+        for i, (node, deg) in enumerate(field_top, 1):
+            label = _truncate_label(node, 80)
+            f.write(f"                        <tr><td>{i}</td><td>{label}</td><td>{deg}</td></tr>\n")
+        f.write("""                    </tbody>
+                </table>
+
+                <h3>Degree Distribution</h3>
+                <p class="explanation">How many fields have each degree (number of distinct co-occurring fields).</p>
+                <table>
+                    <thead>
+                        <tr><th>Degree</th><th>Count of Fields</th></tr>
+                    </thead>
+                    <tbody>
+""")
+        for d, c in field_dist:
+            f.write(f"                        <tr><td>{d}</td><td>{c}</td></tr>\n")
+        f.write("""                    </tbody>
+                </table>
+            </div>
+
+            <!-- Path Structure Tab -->
+            <div id="path-structure" class="tab-pane">
+                <h2>JSON Path Structure Analysis</h2>
+                <p class="explanation">Each JSON path represents a unique nested route (keys/array indices); depth shows how deeply information is nested.</p>
+                
+                <ul class="summary-list">
+                    <li><strong>Total Unique Paths:</strong> """ + str(path_info['total_paths']) + """</li>
+                    <li><strong>Maximum Depth:</strong> """ + str(path_info['max_depth']) + """</li>
+                    <li><strong>Average Depth:</strong> """ + f"{path_info['avg_depth']:.2f}" + """</li>
+                </ul>
+
+                <h3>Deepest JSON Paths (sample)</h3>
+                <p class="explanation">The deepest examples indicate where the data structure is most nested.</p>
+                <ul class="path-list">
+""")
+        for p in path_info["deepest_paths"][:10]:
+            f.write(f"                    <li><code>{p}</code></li>\n")
+        f.write("""                </ul>
+
+                <h3>Most Common Parent Paths</h3>
+                <p class="explanation">Parents that appear most often, suggesting common structural hubs.</p>
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Parent Path</th><th>Count</th></tr>
+                    </thead>
+                    <tbody>
+""")
+        for i, (parent, cnt) in enumerate(parent_top, 1):
+            f.write(f"                        <tr><td>{i}</td><td><code>{parent}</code></td><td>{cnt}</td></tr>\n")
+        f.write("""                    </tbody>
+                </table>
+            </div>
+
+            <!-- Centrality Tab -->
+            <div id="centrality" class="tab-pane">
+                <h2>Field Centrality (Co-occurrence)</h2>
+                <p class="explanation">Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).</p>
+                
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Field</th><th>Degree</th><th>Betweenness</th><th>Closeness</th><th>Eigenvector</th></tr>
+                    </thead>
+                    <tbody>
+""")
+        metrics = centrality
+        top_fields = sorted(metrics["degree"].keys(), key=lambda x: metrics["degree"][x], reverse=True)[:10]
+        for i, node in enumerate(top_fields, 1):
+            f.write(
+                f"                        <tr><td>{i}</td><td>{node}</td>"
+                f"<td>{metrics['degree'].get(node, 0):.3f}</td>"
+                f"<td>{metrics['betweenness'].get(node, 0):.3f}</td>"
+                f"<td>{metrics['closeness'].get(node, 0):.3f}</td>"
+                f"<td>{metrics['eigenvector'].get(node, 0):.3f}</td></tr>\n"
+            )
+        f.write("""                    </tbody>
+                </table>
+            </div>
+
+            <!-- Clustering Tab -->
+            <div id="clustering" class="tab-pane">
+                <h2>Clustering (Field Co-occurrence Graph)</h2>
+                <p class="explanation">Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).</p>
+                
+                <p><strong>Average Clustering Coefficient:</strong> """)
+        avg_clust, top_clust_nodes = clustering
+        f.write(f"{avg_clust:.3f}")
+        f.write("""</p>
+
+                <h3>Top Nodes by Clustering Coefficient</h3>
+                <p class="explanation">Fields whose immediate neighborhoods are most tightly interlinked.</p>
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Field</th><th>Clustering</th></tr>
+                    </thead>
+                    <tbody>
+""")
+        for i, (node, val) in enumerate(top_clust_nodes, 1):
+            f.write(f"                        <tr><td>{i}</td><td>{node}</td><td>{val:.3f}</td></tr>\n")
+        f.write("""                    </tbody>
+                </table>
+            </div>
+
+            <!-- Connected Components Tab -->
+            <div id="components" class="tab-pane">
+                <h2>Connected Components (Field Co-occurrence Graph)</h2>
+                <p class="explanation">Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.</p>
+                
+                <ul class="summary-list">
+                    <li><strong>Number of Components:</strong> """ + str(components['component_count']) + """</li>
+                    <li><strong>Component Sizes (top 10):</strong> """ + str(components['component_sizes'][:10]) + """</li>
+                </ul>
+
+                <h3>Sample of Largest Component Nodes (top 10)</h3>
+                <ul class="component-list">
+""")
+        for n in components["largest_component_sample"][:10]:
+            f.write(f"                    <li>{n}</li>\n")
+        f.write("""                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+""")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Unified Graph Analysis")
     parser.add_argument(
@@ -355,6 +587,16 @@ def main() -> None:
         type=int,
         default=10,
         help="Top-N rows to include in tables",
+    )
+    parser.add_argument(
+        "--html",
+        action="store_true",
+        help="Generate HTML report in addition to Markdown",
+    )
+    parser.add_argument(
+        "--html-output",
+        default="docs/index.html",
+        help="HTML report output path",
     )
     args = parser.parse_args()
 
@@ -413,6 +655,26 @@ def main() -> None:
         components=components,
     )
     print(f"✅ Unified report written to: {args.output}")
+
+    if args.html:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        write_html_report(
+            output_file=args.html_output,
+            timestamp=timestamp,
+            summary=summary,
+            attend_deg=(attend_deg_dict, attend_deg_counts),
+            attend_top=attend_top,
+            attend_dist=attend_dist,
+            field_deg=(fdeg_dict, fdeg_counts),
+            field_top=field_top,
+            field_dist=field_dist,
+            path_info=pmetrics,
+            parent_top=parent_top,
+            centrality=centrality,
+            clustering=(avg_clust, top_clust_nodes),
+            components=components,
+        )
+        print(f"✅ HTML report written to: {args.html_output}")
 
 
 if __name__ == "__main__":
