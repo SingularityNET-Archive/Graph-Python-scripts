@@ -347,6 +347,7 @@ def write_html_report(
     attend_deg: Tuple[Dict[str, int], Counter],
     attend_top: List[Tuple[str, int]],
     attend_dist: List[Tuple[int, int]],
+    attend_graph: nx.Graph,
     field_deg: Tuple[Dict[str, int], Counter],
     field_top: List[Tuple[str, int]],
     field_dist: List[Tuple[int, int]],
@@ -366,6 +367,17 @@ def write_html_report(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unified Graph Analysis Report</title>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://unpkg.com/vis-network@latest/dist/vis-network.min.js"></script>
+    <style type="text/css">
+        #coattendance-network {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background-color: #ffffff;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -400,6 +412,10 @@ def write_html_report(
             <div id="coattendance" class="tab-pane">
                 <h2>Degree (Co-attendance) Analysis</h2>
                 <p class="explanation">People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.</p>
+                
+                <h3>Interactive Network Visualization</h3>
+                <p class="explanation">Visual representation of the co-attendance graph. Nodes represent people, edges represent co-attendance. Use mouse to zoom and pan. Hover over nodes to see details. Click and drag nodes to reposition.</p>
+                <div id="coattendance-network"></div>
                 
                 <h3>Top Nodes by Degree</h3>
                 <p class="explanation">These are the people connected to the most unique others across meetings.</p>
@@ -564,6 +580,29 @@ def write_html_report(
         </div>
     </div>
 
+    <script type="text/javascript">
+        // Convert co-attendance graph to vis-network format
+        const coattendanceGraphData = {
+            nodes: """ + json.dumps([
+                {
+                    "id": node,
+                    "label": _truncate_label(node, 30),
+                    "value": deg,
+                    "title": f"{node} - Degree: {deg}"
+                }
+                for node, deg in attend_graph.degree()
+            ], ensure_ascii=False) + """,
+            edges: """ + json.dumps([
+                {
+                    "from": u,
+                    "to": v,
+                    "value": attend_graph[u][v].get("weight", 1),
+                    "title": f"Co-attended {attend_graph[u][v].get('weight', 1)} time(s)"
+                }
+                for u, v in attend_graph.edges()
+            ], ensure_ascii=False) + """
+        };
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
@@ -665,6 +704,7 @@ def main() -> None:
             attend_deg=(attend_deg_dict, attend_deg_counts),
             attend_top=attend_top,
             attend_dist=attend_dist,
+            attend_graph=G_attend,
             field_deg=(fdeg_dict, fdeg_counts),
             field_top=field_top,
             field_dist=field_dist,

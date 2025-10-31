@@ -1,5 +1,5 @@
 # Unified Graph Analysis Report
-**Generated on:** 2025-10-31 19:31:43
+**Generated on:** 2025-10-31 19:37:59
 
 ## Summary
 These are high-level counts of nodes/edges for each graph constructed during analysis.
@@ -96,16 +96,16 @@ These fields co-occur with the largest variety of other fields.
 
 | Rank | Field | Degree |
 |------|-------|--------|
-| 1 | host | 11 |
-| 2 | documenter | 11 |
+| 1 | documenter | 11 |
+| 2 | date | 11 |
 | 3 | peoplePresent | 11 |
-| 4 | date | 11 |
-| 5 | typeOfMeeting | 11 |
+| 4 | purpose | 11 |
+| 5 | host | 11 |
 | 6 | workingDocs | 11 |
-| 7 | purpose | 11 |
+| 7 | typeOfMeeting | 11 |
 | 8 | status | 11 |
 | 9 | meetingVideoLink | 10 |
-| 10 | type | 9 |
+| 10 | meetingInfo | 9 |
 
 ### Degree Distribution
 How many fields have each degree (number of distinct co-occurring fields).
@@ -165,16 +165,16 @@ Centrality scores highlight fields that are well-connected (degree), act as brid
 
 | Rank | Field | Degree | Betweenness | Closeness | Eigenvector |
 |------|-------|--------|-------------|-----------|------------|
-| 1 | host | 0.256 | 0.001 | 0.256 | 0.309 |
-| 2 | documenter | 0.256 | 0.001 | 0.256 | 0.309 |
+| 1 | documenter | 0.256 | 0.001 | 0.256 | 0.309 |
+| 2 | date | 0.256 | 0.001 | 0.256 | 0.309 |
 | 3 | peoplePresent | 0.256 | 0.001 | 0.256 | 0.309 |
-| 4 | date | 0.256 | 0.001 | 0.256 | 0.309 |
-| 5 | typeOfMeeting | 0.256 | 0.001 | 0.256 | 0.309 |
+| 4 | purpose | 0.256 | 0.001 | 0.256 | 0.309 |
+| 5 | host | 0.256 | 0.001 | 0.256 | 0.309 |
 | 6 | workingDocs | 0.256 | 0.001 | 0.256 | 0.309 |
-| 7 | purpose | 0.256 | 0.001 | 0.256 | 0.309 |
+| 7 | typeOfMeeting | 0.256 | 0.001 | 0.256 | 0.309 |
 | 8 | status | 0.256 | 0.030 | 0.256 | 0.000 |
 | 9 | meetingVideoLink | 0.233 | 0.000 | 0.234 | 0.290 |
-| 10 | type | 0.209 | 0.000 | 0.209 | 0.000 |
+| 10 | meetingInfo | 0.209 | 0.000 | 0.209 | 0.000 |
 
 ## Clustering (Field Co-occurrence Graph)
 Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).
@@ -186,16 +186,16 @@ Fields whose immediate neighborhoods are most tightly interlinked.
 
 | Rank | Field | Clustering |
 |------|-------|------------|
-| 1 | type | 1.000 |
-| 2 | meetingInfo | 1.000 |
-| 3 | agendaItems | 1.000 |
-| 4 | workgroup_id | 1.000 |
-| 5 | canceledSummary | 1.000 |
-| 6 | tags | 1.000 |
-| 7 | noSummaryGiven | 1.000 |
-| 8 | workgroup | 1.000 |
+| 1 | meetingInfo | 1.000 |
+| 2 | tags | 1.000 |
+| 3 | type | 1.000 |
+| 4 | noSummaryGiven | 1.000 |
+| 5 | workgroup | 1.000 |
+| 6 | canceledSummary | 1.000 |
+| 7 | workgroup_id | 1.000 |
+| 8 | agendaItems | 1.000 |
 | 9 | timestampedVideo | 1.000 |
-| 10 | assignee | 1.000 |
+| 10 | dueDate | 1.000 |
 
 ## Connected Components (Field Co-occurrence Graph)
 Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.
@@ -203,14 +203,14 @@ Components are groups of fields that are all reachable from each other; multiple
 - Number of Components: 6
 - Component Sizes (top 10): [12, 12, 10, 4, 4, 2]
 - Sample of Largest Component Nodes (top 10):
-  - otherMediaLink
-  - mediaLink
-  - miroBoardLink
   - timestampedVideo
+  - otherMediaLink
+  - meetingVideoLink
   - host
-  - documenter
-  - peoplePresent
   - date
-  - typeOfMeeting
+  - mediaLink
+  - peoplePresent
+  - purpose
+  - documenter
   - workingDocs
 

@@ -1,3 +1,74 @@
+// Network visualization
+let coattendanceNetwork = null;
+
+function initCoattendanceNetwork() {
+    if (!coattendanceGraphData || !window.vis) {
+        return;
+    }
+    
+    const container = document.getElementById('coattendance-network');
+    if (!container) {
+        return;
+    }
+    
+    // Destroy existing network if it exists
+    if (coattendanceNetwork) {
+        coattendanceNetwork.destroy();
+    }
+    
+    const nodes = new vis.DataSet(coattendanceGraphData.nodes);
+    const edges = new vis.DataSet(coattendanceGraphData.edges);
+    
+    const data = {
+        nodes: nodes,
+        edges: edges
+    };
+    
+    const options = {
+        nodes: {
+            shape: 'dot',
+            size: 16,
+            font: {
+                size: 12,
+                color: '#24292e'
+            },
+            borderWidth: 2,
+            borderColor: '#0366d6'
+        },
+        edges: {
+            width: 2,
+            color: {
+                color: '#e1e4e8',
+                highlight: '#0366d6'
+            },
+            smooth: {
+                type: 'continuous'
+            }
+        },
+        physics: {
+            enabled: true,
+            stabilization: {
+                iterations: 200
+            },
+            barnesHut: {
+                gravitationalConstant: -2000,
+                centralGravity: 0.3,
+                springLength: 95,
+                springConstant: 0.04,
+                damping: 0.09
+            }
+        },
+        interaction: {
+            hover: true,
+            tooltipDelay: 100,
+            zoomView: true,
+            dragView: true
+        }
+    };
+    
+    coattendanceNetwork = new vis.Network(container, data, options);
+}
+
 // Tab switching functionality
 function showTab(tabId) {
     // Hide all tab panes
@@ -35,6 +106,14 @@ function showTab(tabId) {
             button.classList.add('active');
         }
     });
+
+    // Initialize network visualization if showing co-attendance tab
+    if (tabId === 'coattendance') {
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+            initCoattendanceNetwork();
+        }, 100);
+    }
 
     // Update URL hash without scrolling
     if (history.pushState) {
