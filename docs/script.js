@@ -154,6 +154,11 @@ function initCoattendanceNetwork() {
     const nodes = new vis.DataSet(scaledNodes);
     const edges = new vis.DataSet(scaledEdges);
     
+    // Store references to all nodes and edges for filtering
+    const allNodeIds = new Set(scaledNodes.map(n => n.id));
+    const allEdgeIds = new Set(scaledEdges.map(e => `${e.from}-${e.to}`));
+    let currentlySelectedNodeId = null;
+    
     const data = {
         nodes: nodes,
         edges: edges
@@ -261,14 +266,70 @@ function initCoattendanceNetwork() {
         }
     }, 3000);
     
+    // Function to filter visualization to show only selected node and its connections
+    function filterToNode(nodeId) {
+        if (!nodeId) {
+            // Reset: show all nodes and edges
+            const allNodeIdsArray = Array.from(allNodeIds);
+            allNodeIdsArray.forEach(id => {
+                nodes.update({ id: id, hidden: false });
+            });
+            
+            // Remove all edges and re-add them
+            edges.clear();
+            edges.add(scaledEdges);
+            
+            currentlySelectedNodeId = null;
+            console.log('Reset to full view');
+            return;
+        }
+        
+        currentlySelectedNodeId = nodeId;
+        
+        // Find all edges connected to this node
+        const connectedEdges = scaledEdges.filter(e => 
+            e.from === nodeId || e.to === nodeId
+        );
+        
+        // Get all connected node IDs (the selected node + its neighbors)
+        const connectedNodeIds = new Set([nodeId]);
+        connectedEdges.forEach(e => {
+            connectedNodeIds.add(e.from);
+            connectedNodeIds.add(e.to);
+        });
+        
+        // Hide all nodes except connected ones
+        allNodeIds.forEach(id => {
+            nodes.update({ 
+                id: id, 
+                hidden: !connectedNodeIds.has(id)
+            });
+        });
+        
+        // Replace edges with only connected ones
+        edges.clear();
+        edges.add(connectedEdges);
+        
+        console.log(`Filtered to node: ${nodeId} (showing ${connectedNodeIds.size} nodes, ${connectedEdges.length} edges)`);
+    }
+    
     // Add event listeners for better interactivity
     coattendanceNetwork.on('click', function(params) {
         if (params.nodes.length > 0) {
             const nodeId = params.nodes[0];
             const node = coattendanceGraphData.nodes.find(n => n.id === nodeId);
-            if (node) {
-                console.log('Selected node:', node);
+            
+            // If clicking the same node again, reset to full view
+            if (currentlySelectedNodeId === nodeId) {
+                filterToNode(null); // Reset view
+                return;
             }
+            
+            // Filter to show only this node and its connections
+            filterToNode(nodeId);
+        } else if (params.nodes.length === 0 && currentlySelectedNodeId) {
+            // Clicking on background: reset to full view
+            filterToNode(null);
         }
     });
     
