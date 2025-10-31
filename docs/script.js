@@ -195,23 +195,23 @@ function initCoattendanceNetwork() {
         physics: {
             enabled: true,
             stabilization: {
-                iterations: 250,
-                updateInterval: 50,
+                iterations: 150,
+                updateInterval: 100,
                 onlyDynamicEdges: false,
                 fit: true
             },
             barnesHut: {
-                gravitationalConstant: -3000,
-                centralGravity: 0.1,
-                springLength: 150,
-                springConstant: 0.02,
-                damping: 0.3,
-                avoidOverlap: 1.0
+                gravitationalConstant: -5000,
+                centralGravity: 0.05,
+                springLength: 250,
+                springConstant: 0.01,
+                damping: 0.5,
+                avoidOverlap: 1.2
             },
-            maxVelocity: 10,
-            minVelocity: 0.5,
+            maxVelocity: 5,
+            minVelocity: 0.1,
             solver: 'barnesHut',
-            timestep: 0.5
+            timestep: 0.3
         },
         interaction: {
             hover: true,
@@ -234,14 +234,32 @@ function initCoattendanceNetwork() {
     coattendanceNetwork = new vis.Network(container, data, options);
     
     // Disable physics after stabilization to prevent constant movement
+    let physicsDisabled = false;
+    
     coattendanceNetwork.once('stabilizationEnd', function() {
-        console.log('Network stabilized - disabling physics');
-        coattendanceNetwork.setOptions({
-            physics: {
-                enabled: false
-            }
-        });
+        if (!physicsDisabled) {
+            physicsDisabled = true;
+            console.log('Network stabilized - disabling physics');
+            coattendanceNetwork.setOptions({
+                physics: {
+                    enabled: false
+                }
+            });
+        }
     });
+    
+    // Fallback: disable physics after 3 seconds regardless of stabilization status
+    setTimeout(function() {
+        if (!physicsDisabled) {
+            physicsDisabled = true;
+            console.log('Force disabling physics after timeout');
+            coattendanceNetwork.setOptions({
+                physics: {
+                    enabled: false
+                }
+            });
+        }
+    }, 3000);
     
     // Add event listeners for better interactivity
     coattendanceNetwork.on('click', function(params) {
