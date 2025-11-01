@@ -343,12 +343,13 @@ def ensure_iterable_records(data: Any) -> List[Any]:
 
 def _review_button(method_name: str) -> str:
     """Generate HTML for a review button linking to GitHub Issues."""
-    # GitHub uses template name without .yml extension
-    # Note: GitHub doesn't support pre-filling form fields via URL params,
-    # but we include method in body text for reference
-    body_text = f"Method: {method_name}\n\nFile: docs/index.html\n\n"
+    # GitHub Issue Forms: use template name WITHOUT .yml extension
+    # The template parameter should load the form template
+    # Note: If config.yml exists, GitHub may show template chooser first
+    body_text = f"**Method:** {method_name}\n\n**File:** docs/index.html\n\n---\n\n"
     # URL encode the body text properly
     encoded_body = urllib.parse.quote(body_text)
+    # Template name without extension - GitHub's standard format
     url = f"https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body={encoded_body}"
     return f'<a href="{url}" class="review-button" target="_blank">Review This Analysis</a>'
 
