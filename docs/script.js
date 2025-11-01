@@ -701,41 +701,51 @@ function displayAuditData(methodStats, reviewsByMethod, lastUpdated) {
     auditTab.innerHTML = html;
 }
 
-// Store original showTab function
-let originalShowTab = showTab;
-
-// Override showTab to load reviews when switching tabs
-function showTabWithReviews(tabId) {
-    // Call original showTab
-    originalShowTab(tabId);
+// Wrap the original showTab function to add review loading
+(function() {
+    // Store original showTab function
+    const originalShowTab = showTab;
     
-    // Load reviews for the current tab
-    setTimeout(() => {
-        const validMethods = ['coattendance', 'field-degree', 'path-structure', 'centrality', 'clustering', 'components'];
-        if (validMethods.includes(tabId)) {
-            loadReviewsForTab(tabId);
-        } else if (tabId === 'audit') {
-            loadAuditData();
-        }
-    }, 100);
-}
-
-// Replace showTab
-showTab = showTabWithReviews;
+    // Override showTab to load reviews when switching tabs
+    window.showTab = function(tabId) {
+        // Call original showTab
+        originalShowTab(tabId);
+        
+        // Load reviews for the current tab
+        setTimeout(() => {
+            const validMethods = ['coattendance', 'field-degree', 'path-structure', 'centrality', 'clustering', 'components'];
+            if (validMethods.includes(tabId)) {
+                if (typeof loadReviewsForTab === 'function') {
+                    loadReviewsForTab(tabId);
+                }
+            } else if (tabId === 'audit') {
+                if (typeof loadAuditData === 'function') {
+                    loadAuditData();
+                }
+            }
+        }, 100);
+    };
+})();
 
 // Load reviews on page load
 document.addEventListener('DOMContentLoaded', function() {
     // Load reviews for initial tab
-    const activeTab = document.querySelector('.tab-pane.active');
-    if (activeTab) {
-        const tabId = activeTab.id;
-        if (tabId && tabId !== 'summary') {
-            if (tabId === 'audit') {
-                loadAuditData();
-            } else {
-                loadReviewsForTab(tabId);
+    setTimeout(() => {
+        const activeTab = document.querySelector('.tab-pane.active');
+        if (activeTab) {
+            const tabId = activeTab.id;
+            if (tabId && tabId !== 'summary') {
+                if (tabId === 'audit') {
+                    if (typeof loadAuditData === 'function') {
+                        loadAuditData();
+                    }
+                } else {
+                    if (typeof loadReviewsForTab === 'function') {
+                        loadReviewsForTab(tabId);
+                    }
+                }
             }
         }
-    }
+    }, 500);
 });
 
