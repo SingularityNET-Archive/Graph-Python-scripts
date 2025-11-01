@@ -21,7 +21,7 @@
     <div class="container">
         <header>
             <h1>Unified Graph Analysis Report</h1>
-            <p class="timestamp">Generated on: <strong>2025-11-01 19:07:01</strong></p>
+            <p class="timestamp">Generated on: <strong>2025-11-01 19:15:23</strong></p>
         </header>
 
         <div class="tabs">
@@ -53,42 +53,6 @@
             <!-- Co-attendance Degree Tab -->
             <div id="coattendance" class="tab-pane">
                 <h2>Degree (Co-attendance) Analysis</h2>
-                
-    <div class="review-section">
-        <h3>Review This Analysis</h3>
-        <form id="review-form-coattendance" class="review-form" onsubmit="submitReview(event, 'coattendance')">
-            <div class="form-group">
-                <label for="rating-coattendance">Rating:</label>
-                <select id="rating-coattendance" name="rating" required>
-                    <option value="">Select a rating...</option>
-                    <option value="correct">Correct - The analysis results appear accurate</option>
-                    <option value="needs-review">Needs Review - The analysis may have issues</option>
-                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="comment-coattendance">Comments:</label>
-                <textarea id="comment-coattendance" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="reviewer-coattendance">Your Name (optional):</label>
-                <input type="text" id="reviewer-coattendance" name="reviewer" placeholder="Anonymous">
-            </div>
-            <div class="form-group">
-                <label for="suggestions-coattendance">Suggestions (optional):</label>
-                <textarea id="suggestions-coattendance" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
-            </div>
-            <input type="hidden" name="method" value="coattendance">
-            <input type="hidden" name="file" value="docs/index.html">
-            <button type="submit" class="submit-review-btn">Submit Review</button>
-        </form>
-        <div id="review-success-coattendance" class="review-success" style="display: none;">
-            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
-            <button onclick="downloadReviewJSON('coattendance')" class="download-btn">Download Review as JSON</button>
-        </div>
-        <div id="reviews-list-coattendance" class="reviews-list"></div>
-    </div>
-    
                 <p class="explanation">People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.</p>
                 
                 <h3>Interactive Network Visualization</h3>
@@ -180,11 +144,88 @@
                         <tr><td>95</td><td>1</td></tr>
                     </tbody>
                 </table>
+                
+    <div class="review-section">
+        <h3>Review This Analysis</h3>
+        <form id="review-form-coattendance" class="review-form" onsubmit="submitReview(event, 'coattendance')">
+            <div class="form-group">
+                <label for="rating-coattendance">Rating:</label>
+                <select id="rating-coattendance" name="rating" required>
+                    <option value="">Select a rating...</option>
+                    <option value="correct">Correct - The analysis results appear accurate</option>
+                    <option value="needs-review">Needs Review - The analysis may have issues</option>
+                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment-coattendance">Comments:</label>
+                <textarea id="comment-coattendance" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-coattendance">Your Name (optional):</label>
+                <input type="text" id="reviewer-coattendance" name="reviewer" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="suggestions-coattendance">Suggestions (optional):</label>
+                <textarea id="suggestions-coattendance" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
+            </div>
+            <input type="hidden" name="method" value="coattendance">
+            <input type="hidden" name="file" value="docs/index.html">
+            <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="review-success-coattendance" class="review-success" style="display: none;">
+            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
+            <button onclick="downloadReviewJSON('coattendance')" class="download-btn">Download Review as JSON</button>
+        </div>
+        <div id="reviews-list-coattendance" class="reviews-list"></div>
+    </div>
+    
             </div>
 
             <!-- Field Degree Tab -->
             <div id="field-degree" class="tab-pane">
                 <h2>JSON Field Degree Analysis</h2>
+                <p class="explanation">Fields are connected when they appear together inside the same JSON object; a field's degree is the number of distinct fields it co-occurs with.</p>
+                
+                <h3>Top Fields by Degree</h3>
+                <p class="explanation">These fields co-occur with the largest variety of other fields.</p>
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Field</th><th>Degree</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>purpose</td><td>11</td></tr>
+                        <tr><td>2</td><td>host</td><td>11</td></tr>
+                        <tr><td>3</td><td>peoplePresent</td><td>11</td></tr>
+                        <tr><td>4</td><td>documenter</td><td>11</td></tr>
+                        <tr><td>5</td><td>date</td><td>11</td></tr>
+                        <tr><td>6</td><td>workingDocs</td><td>11</td></tr>
+                        <tr><td>7</td><td>typeOfMeeting</td><td>11</td></tr>
+                        <tr><td>8</td><td>status</td><td>11</td></tr>
+                        <tr><td>9</td><td>meetingVideoLink</td><td>10</td></tr>
+                        <tr><td>10</td><td>agendaItems</td><td>9</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Degree Distribution</h3>
+                <p class="explanation">How many fields have each degree (number of distinct co-occurring fields).</p>
+                <table>
+                    <thead>
+                        <tr><th>Degree</th><th>Count of Fields</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>2</td></tr>
+                        <tr><td>2</td><td>2</td></tr>
+                        <tr><td>3</td><td>9</td></tr>
+                        <tr><td>4</td><td>4</td></tr>
+                        <tr><td>5</td><td>1</td></tr>
+                        <tr><td>7</td><td>2</td></tr>
+                        <tr><td>8</td><td>3</td></tr>
+                        <tr><td>9</td><td>12</td></tr>
+                        <tr><td>10</td><td>1</td></tr>
+                        <tr><td>11</td><td>8</td></tr>
+                    </tbody>
+                </table>
                 
     <div class="review-section">
         <h3>Review This Analysis</h3>
@@ -221,88 +262,11 @@
         <div id="reviews-list-field-degree" class="reviews-list"></div>
     </div>
     
-                <p class="explanation">Fields are connected when they appear together inside the same JSON object; a field's degree is the number of distinct fields it co-occurs with.</p>
-                
-                <h3>Top Fields by Degree</h3>
-                <p class="explanation">These fields co-occur with the largest variety of other fields.</p>
-                <table>
-                    <thead>
-                        <tr><th>Rank</th><th>Field</th><th>Degree</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>1</td><td>host</td><td>11</td></tr>
-                        <tr><td>2</td><td>peoplePresent</td><td>11</td></tr>
-                        <tr><td>3</td><td>date</td><td>11</td></tr>
-                        <tr><td>4</td><td>workingDocs</td><td>11</td></tr>
-                        <tr><td>5</td><td>typeOfMeeting</td><td>11</td></tr>
-                        <tr><td>6</td><td>purpose</td><td>11</td></tr>
-                        <tr><td>7</td><td>documenter</td><td>11</td></tr>
-                        <tr><td>8</td><td>status</td><td>11</td></tr>
-                        <tr><td>9</td><td>meetingVideoLink</td><td>10</td></tr>
-                        <tr><td>10</td><td>workgroup</td><td>9</td></tr>
-                    </tbody>
-                </table>
-
-                <h3>Degree Distribution</h3>
-                <p class="explanation">How many fields have each degree (number of distinct co-occurring fields).</p>
-                <table>
-                    <thead>
-                        <tr><th>Degree</th><th>Count of Fields</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>1</td><td>2</td></tr>
-                        <tr><td>2</td><td>2</td></tr>
-                        <tr><td>3</td><td>9</td></tr>
-                        <tr><td>4</td><td>4</td></tr>
-                        <tr><td>5</td><td>1</td></tr>
-                        <tr><td>7</td><td>2</td></tr>
-                        <tr><td>8</td><td>3</td></tr>
-                        <tr><td>9</td><td>12</td></tr>
-                        <tr><td>10</td><td>1</td></tr>
-                        <tr><td>11</td><td>8</td></tr>
-                    </tbody>
-                </table>
             </div>
 
             <!-- Path Structure Tab -->
             <div id="path-structure" class="tab-pane">
                 <h2>JSON Path Structure Analysis</h2>
-                
-    <div class="review-section">
-        <h3>Review This Analysis</h3>
-        <form id="review-form-path-structure" class="review-form" onsubmit="submitReview(event, 'path-structure')">
-            <div class="form-group">
-                <label for="rating-path-structure">Rating:</label>
-                <select id="rating-path-structure" name="rating" required>
-                    <option value="">Select a rating...</option>
-                    <option value="correct">Correct - The analysis results appear accurate</option>
-                    <option value="needs-review">Needs Review - The analysis may have issues</option>
-                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="comment-path-structure">Comments:</label>
-                <textarea id="comment-path-structure" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="reviewer-path-structure">Your Name (optional):</label>
-                <input type="text" id="reviewer-path-structure" name="reviewer" placeholder="Anonymous">
-            </div>
-            <div class="form-group">
-                <label for="suggestions-path-structure">Suggestions (optional):</label>
-                <textarea id="suggestions-path-structure" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
-            </div>
-            <input type="hidden" name="method" value="path-structure">
-            <input type="hidden" name="file" value="docs/index.html">
-            <button type="submit" class="submit-review-btn">Submit Review</button>
-        </form>
-        <div id="review-success-path-structure" class="review-success" style="display: none;">
-            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
-            <button onclick="downloadReviewJSON('path-structure')" class="download-btn">Download Review as JSON</button>
-        </div>
-        <div id="reviews-list-path-structure" class="reviews-list"></div>
-    </div>
-    
                 <p class="explanation">Each JSON path represents a unique nested route (keys/array indices); depth shows how deeply information is nested.</p>
                 
                 <ul class="summary-list">
@@ -345,11 +309,66 @@
                         <tr><td>10</td><td><code>[37].agendaItems[0]</code></td><td>18</td></tr>
                     </tbody>
                 </table>
+                
+    <div class="review-section">
+        <h3>Review This Analysis</h3>
+        <form id="review-form-path-structure" class="review-form" onsubmit="submitReview(event, 'path-structure')">
+            <div class="form-group">
+                <label for="rating-path-structure">Rating:</label>
+                <select id="rating-path-structure" name="rating" required>
+                    <option value="">Select a rating...</option>
+                    <option value="correct">Correct - The analysis results appear accurate</option>
+                    <option value="needs-review">Needs Review - The analysis may have issues</option>
+                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment-path-structure">Comments:</label>
+                <textarea id="comment-path-structure" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-path-structure">Your Name (optional):</label>
+                <input type="text" id="reviewer-path-structure" name="reviewer" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="suggestions-path-structure">Suggestions (optional):</label>
+                <textarea id="suggestions-path-structure" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
+            </div>
+            <input type="hidden" name="method" value="path-structure">
+            <input type="hidden" name="file" value="docs/index.html">
+            <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="review-success-path-structure" class="review-success" style="display: none;">
+            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
+            <button onclick="downloadReviewJSON('path-structure')" class="download-btn">Download Review as JSON</button>
+        </div>
+        <div id="reviews-list-path-structure" class="reviews-list"></div>
+    </div>
+    
             </div>
 
             <!-- Centrality Tab -->
             <div id="centrality" class="tab-pane">
                 <h2>Field Centrality (Co-occurrence)</h2>
+                <p class="explanation">Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).</p>
+                
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Field</th><th>Degree</th><th>Betweenness</th><th>Closeness</th><th>Eigenvector</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>purpose</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>2</td><td>host</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>3</td><td>peoplePresent</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>4</td><td>documenter</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>5</td><td>date</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>6</td><td>workingDocs</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>7</td><td>typeOfMeeting</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>8</td><td>status</td><td>0.256</td><td>0.030</td><td>0.256</td><td>0.000</td></tr>
+                        <tr><td>9</td><td>meetingVideoLink</td><td>0.233</td><td>0.000</td><td>0.234</td><td>0.290</td></tr>
+                        <tr><td>10</td><td>agendaItems</td><td>0.209</td><td>0.000</td><td>0.209</td><td>0.000</td></tr>
+                    </tbody>
+                </table>
                 
     <div class="review-section">
         <h3>Review This Analysis</h3>
@@ -386,30 +405,34 @@
         <div id="reviews-list-centrality" class="reviews-list"></div>
     </div>
     
-                <p class="explanation">Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).</p>
-                
-                <table>
-                    <thead>
-                        <tr><th>Rank</th><th>Field</th><th>Degree</th><th>Betweenness</th><th>Closeness</th><th>Eigenvector</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>1</td><td>host</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>2</td><td>peoplePresent</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>3</td><td>date</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>4</td><td>workingDocs</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>5</td><td>typeOfMeeting</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>6</td><td>purpose</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>7</td><td>documenter</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>8</td><td>status</td><td>0.256</td><td>0.030</td><td>0.256</td><td>0.000</td></tr>
-                        <tr><td>9</td><td>meetingVideoLink</td><td>0.233</td><td>0.000</td><td>0.234</td><td>0.290</td></tr>
-                        <tr><td>10</td><td>workgroup</td><td>0.209</td><td>0.000</td><td>0.209</td><td>0.000</td></tr>
-                    </tbody>
-                </table>
             </div>
 
             <!-- Clustering Tab -->
             <div id="clustering" class="tab-pane">
                 <h2>Clustering (Field Co-occurrence Graph)</h2>
+                <p class="explanation">Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).</p>
+                
+                <p><strong>Average Clustering Coefficient:</strong> 0.882</p>
+
+                <h3>Top Nodes by Clustering Coefficient</h3>
+                <p class="explanation">Fields whose immediate neighborhoods are most tightly interlinked.</p>
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Field</th><th>Clustering</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>agendaItems</td><td>1.000</td></tr>
+                        <tr><td>2</td><td>type</td><td>1.000</td></tr>
+                        <tr><td>3</td><td>meetingInfo</td><td>1.000</td></tr>
+                        <tr><td>4</td><td>noSummaryGiven</td><td>1.000</td></tr>
+                        <tr><td>5</td><td>workgroup_id</td><td>1.000</td></tr>
+                        <tr><td>6</td><td>workgroup</td><td>1.000</td></tr>
+                        <tr><td>7</td><td>canceledSummary</td><td>1.000</td></tr>
+                        <tr><td>8</td><td>tags</td><td>1.000</td></tr>
+                        <tr><td>9</td><td>timestampedVideo</td><td>1.000</td></tr>
+                        <tr><td>10</td><td>assignee</td><td>1.000</td></tr>
+                    </tbody>
+                </table>
                 
     <div class="review-section">
         <h3>Review This Analysis</h3>
@@ -446,34 +469,31 @@
         <div id="reviews-list-clustering" class="reviews-list"></div>
     </div>
     
-                <p class="explanation">Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).</p>
-                
-                <p><strong>Average Clustering Coefficient:</strong> 0.882</p>
-
-                <h3>Top Nodes by Clustering Coefficient</h3>
-                <p class="explanation">Fields whose immediate neighborhoods are most tightly interlinked.</p>
-                <table>
-                    <thead>
-                        <tr><th>Rank</th><th>Field</th><th>Clustering</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>1</td><td>workgroup</td><td>1.000</td></tr>
-                        <tr><td>2</td><td>agendaItems</td><td>1.000</td></tr>
-                        <tr><td>3</td><td>workgroup_id</td><td>1.000</td></tr>
-                        <tr><td>4</td><td>tags</td><td>1.000</td></tr>
-                        <tr><td>5</td><td>type</td><td>1.000</td></tr>
-                        <tr><td>6</td><td>noSummaryGiven</td><td>1.000</td></tr>
-                        <tr><td>7</td><td>meetingInfo</td><td>1.000</td></tr>
-                        <tr><td>8</td><td>canceledSummary</td><td>1.000</td></tr>
-                        <tr><td>9</td><td>timestampedVideo</td><td>1.000</td></tr>
-                        <tr><td>10</td><td>text</td><td>1.000</td></tr>
-                    </tbody>
-                </table>
             </div>
 
             <!-- Connected Components Tab -->
             <div id="components" class="tab-pane">
                 <h2>Connected Components (Field Co-occurrence Graph)</h2>
+                <p class="explanation">Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.</p>
+                
+                <ul class="summary-list">
+                    <li><strong>Number of Components:</strong> 6</li>
+                    <li><strong>Component Sizes (top 10):</strong> [12, 12, 10, 4, 4, 2]</li>
+                </ul>
+
+                <h3>Sample of Largest Component Nodes (top 10)</h3>
+                <ul class="component-list">
+                    <li>timestampedVideo</li>
+                    <li>purpose</li>
+                    <li>typeOfMeeting</li>
+                    <li>otherMediaLink</li>
+                    <li>peoplePresent</li>
+                    <li>documenter</li>
+                    <li>meetingVideoLink</li>
+                    <li>date</li>
+                    <li>miroBoardLink</li>
+                    <li>workingDocs</li>
+                </ul>
                 
     <div class="review-section">
         <h3>Review This Analysis</h3>
@@ -510,26 +530,6 @@
         <div id="reviews-list-components" class="reviews-list"></div>
     </div>
     
-                <p class="explanation">Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.</p>
-                
-                <ul class="summary-list">
-                    <li><strong>Number of Components:</strong> 6</li>
-                    <li><strong>Component Sizes (top 10):</strong> [12, 12, 10, 4, 4, 2]</li>
-                </ul>
-
-                <h3>Sample of Largest Component Nodes (top 10)</h3>
-                <ul class="component-list">
-                    <li>host</li>
-                    <li>peoplePresent</li>
-                    <li>meetingVideoLink</li>
-                    <li>date</li>
-                    <li>workingDocs</li>
-                    <li>timestampedVideo</li>
-                    <li>mediaLink</li>
-                    <li>typeOfMeeting</li>
-                    <li>miroBoardLink</li>
-                    <li>otherMediaLink</li>
-                </ul>
             </div>
 
             <!-- Audit Tab -->
