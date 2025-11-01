@@ -385,7 +385,8 @@ function showTab(tabId) {
         'path-structure': 'Path Structure',
         'centrality': 'Centrality',
         'clustering': 'Clustering',
-        'components': 'Components'
+        'components': 'Components',
+        'audit': 'Audit'
     };
     
     tabButtons.forEach(button => {
@@ -409,6 +410,13 @@ function showTab(tabId) {
             console.error('Error destroying network:', e);
         }
     }
+    
+    // Load audit data if showing audit tab
+    if (tabId === 'audit') {
+        setTimeout(() => {
+            loadAuditData();
+        }, 100);
+    }
 
     // Update URL hash without scrolling
     if (history.pushState) {
@@ -421,7 +429,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const hash = window.location.hash.substring(1);
     if (hash) {
         // Check if hash corresponds to a valid tab
-        const validTabs = ['summary', 'coattendance', 'field-degree', 'path-structure', 'centrality', 'clustering', 'components'];
+        const validTabs = ['summary', 'coattendance', 'field-degree', 'path-structure', 'centrality', 'clustering', 'components', 'audit'];
         if (validTabs.includes(hash)) {
             showTab(hash);
             return;
@@ -435,7 +443,7 @@ window.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('popstate', function() {
     const hash = window.location.hash.substring(1);
     if (hash) {
-        const validTabs = ['summary', 'coattendance', 'field-degree', 'path-structure', 'centrality', 'clustering', 'components'];
+        const validTabs = ['summary', 'coattendance', 'field-degree', 'path-structure', 'centrality', 'clustering', 'components', 'audit'];
         if (validTabs.includes(hash)) {
             showTab(hash);
         }

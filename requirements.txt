@@ -1,3 +1,4 @@
 requests>=2.32
 networkx>=3.2
 matplotlib>=3.8
+PyGithub>=2.1.0

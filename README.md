@@ -58,5 +58,30 @@ All scripts read from a shared public JSON:
 - `graph.png`, `graph2.png` — rendered graphs
 - `Scripts/all_workgroups_graph_sanitized.gexf` — Gephi import
 - Markdown reports in `reports/`
+- HTML dashboard at `docs/index.html` (GitHub Pages)
 
 Notes: Scripts run headlessly and save files to disk; images can be opened via your OS default viewer.
+
+## Community Review System
+
+This repository includes a community review system to validate graph analysis results. You can review analysis results and provide feedback through GitHub Issues.
+
+### How to Review
+
+1. Visit the [HTML dashboard](https://singularitynet-archive.github.io/Graph-Python-scripts/) (or open `docs/index.html` locally)
+2. Navigate to any analysis tab (Co-attendance Degree, Field Degree, Path Structure, etc.)
+3. Click the **"Review This Analysis"** button at the top of the section
+4. Fill out the review form with:
+   - Your rating (Correct / Needs Review / Incorrect)
+   - Comments and feedback
+   - Optional suggestions for improvements
+5. Submit the issue - it will be automatically tagged with the `review` label
+
+### View Review Results
+
+- Click on the **"Audit"** tab in the dashboard to see:
+  - Trust scores for each analysis method
+  - Rating distribution charts
+  - All review comments from the community
+
+Reviews are collected nightly via GitHub Actions and displayed in the audit dashboard. See [CONTRIBUTING.md](CONTRIBUTING.md) and [REVIEWING.md](REVIEWING.md) for more details.

@@ -340,6 +340,12 @@ def ensure_iterable_records(data: Any) -> List[Any]:
 
 # ---------------- HTML Report Writer ----------------
 
+def _review_button(method_name: str) -> str:
+    """Generate HTML for a review button linking to GitHub Issues."""
+    url = f"https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review.yml&method={method_name}&file=docs/index.html"
+    return f'<a href="{url}" class="review-button" target="_blank">Review This Analysis</a>'
+
+
 def write_html_report(
     output_file: str,
     timestamp: str,
@@ -394,6 +400,7 @@ def write_html_report(
             <button class="tab-button" onclick="showTab('centrality')">Centrality</button>
             <button class="tab-button" onclick="showTab('clustering')">Clustering</button>
             <button class="tab-button" onclick="showTab('components')">Components</button>
+            <button class="tab-button" onclick="showTab('audit')">Audit</button>
         </div>
 
         <div class="tab-content">
@@ -411,6 +418,7 @@ def write_html_report(
             <!-- Co-attendance Degree Tab -->
             <div id="coattendance" class="tab-pane">
                 <h2>Degree (Co-attendance) Analysis</h2>
+                """ + _review_button("coattendance") + """
                 <p class="explanation">People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.</p>
                 
                 <h3>Interactive Network Visualization</h3>
@@ -452,6 +460,7 @@ def write_html_report(
             <!-- Field Degree Tab -->
             <div id="field-degree" class="tab-pane">
                 <h2>JSON Field Degree Analysis</h2>
+                """ + _review_button("field-degree") + """
                 <p class="explanation">Fields are connected when they appear together inside the same JSON object; a field's degree is the number of distinct fields it co-occurs with.</p>
                 
                 <h3>Top Fields by Degree</h3>
@@ -485,6 +494,7 @@ def write_html_report(
             <!-- Path Structure Tab -->
             <div id="path-structure" class="tab-pane">
                 <h2>JSON Path Structure Analysis</h2>
+                """ + _review_button("path-structure") + """
                 <p class="explanation">Each JSON path represents a unique nested route (keys/array indices); depth shows how deeply information is nested.</p>
                 
                 <ul class="summary-list">
@@ -518,6 +528,7 @@ def write_html_report(
             <!-- Centrality Tab -->
             <div id="centrality" class="tab-pane">
                 <h2>Field Centrality (Co-occurrence)</h2>
+                """ + _review_button("centrality") + """
                 <p class="explanation">Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).</p>
                 
                 <table>
@@ -543,6 +554,7 @@ def write_html_report(
             <!-- Clustering Tab -->
             <div id="clustering" class="tab-pane">
                 <h2>Clustering (Field Co-occurrence Graph)</h2>
+                """ + _review_button("clustering") + """
                 <p class="explanation">Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).</p>
                 
                 <p><strong>Average Clustering Coefficient:</strong> """)
@@ -567,6 +579,7 @@ def write_html_report(
             <!-- Connected Components Tab -->
             <div id="components" class="tab-pane">
                 <h2>Connected Components (Field Co-occurrence Graph)</h2>
+                """ + _review_button("components") + """
                 <p class="explanation">Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.</p>
                 
                 <ul class="summary-list">
@@ -580,6 +593,55 @@ def write_html_report(
         for n in components["largest_component_sample"][:10]:
             f.write(f"                    <li>{n}</li>\n")
         f.write("""                </ul>
+            </div>
+
+            <!-- Audit Tab -->
+            <div id="audit" class="tab-pane">
+                <h2>Review Audit</h2>
+                <p class="explanation">Community review scores and feedback for each analysis method.</p>
+                
+                <div id="audit-loading" style="text-align: center; padding: 20px;">
+                    <p>Loading audit data...</p>
+                </div>
+                
+                <div id="audit-content" style="display: none;">
+                    <p id="audit-last-updated" class="explanation" style="font-weight: bold; margin-bottom: 20px;"></p>
+                    
+                    <h3>Trust Scores by Method</h3>
+                    <p class="explanation">Percentage of reviews rated as "Correct" for each analysis method.</p>
+                    <table id="trust-scores-table">
+                        <thead>
+                            <tr><th>Method</th><th>Trust Score</th><th>Total Reviews</th><th>Correct</th><th>Incorrect</th><th>Needs Review</th></tr>
+                        </thead>
+                        <tbody id="trust-scores-body">
+                        </tbody>
+                    </table>
+                    
+                    <h3>Rating Distribution</h3>
+                    <p class="explanation">Overall distribution of review ratings across all methods.</p>
+                    <div id="rating-chart-container" style="margin: 20px 0; text-align: center;">
+                        <canvas id="rating-chart" width="400" height="400"></canvas>
+                    </div>
+                    
+                    <h3>Review Comments</h3>
+                    <p class="explanation">All review comments submitted by the community.</p>
+                    <table id="review-comments-table">
+                        <thead>
+                            <tr><th>Method</th><th>Rating</th><th>Comment</th><th>Author</th><th>Date</th><th>Issue</th></tr>
+                        </thead>
+                        <tbody id="review-comments-body">
+                        </tbody>
+                    </table>
+                    
+                    <p style="margin-top: 20px;">
+                        <a href="audit/reviews.json" target="_blank" class="review-button">View Raw JSON Data</a>
+                    </p>
+                </div>
+                
+                <div id="audit-error" style="display: none; color: #d73a49; padding: 20px; background-color: #ffeef0; border-radius: 6px;">
+                    <p><strong>Error loading audit data:</strong> <span id="audit-error-message"></span></p>
+                    <p>This may be because no reviews have been submitted yet, or the data file doesn't exist.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -607,6 +669,7 @@ def write_html_report(
             ], ensure_ascii=False) + """
         };
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

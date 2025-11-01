@@ -1,0 +1,67 @@
+name: Analysis Review
+description: Review and provide feedback on graph analysis results
+title: "[Review] "
+labels: ["review"]
+body:
+  - type: dropdown
+    id: method
+    attributes:
+      label: Analysis Method
+      description: Which analysis method are you reviewing?
+      options:
+        - coattendance
+        - field-degree
+        - path-structure
+        - centrality
+        - clustering
+        - components
+      default: 0
+    validations:
+      required: true
+
+  - type: radio
+    id: rating
+    attributes:
+      label: Rating
+      description: How would you rate the accuracy of this analysis?
+      options:
+        - label: Correct
+          value: correct
+        - label: Needs Review
+          value: needs-review
+        - label: Incorrect
+          value: incorrect
+    validations:
+      required: true
+
+  - type: textarea
+    id: comment
+    attributes:
+      label: Comments
+      description: Please provide your feedback, observations, or concerns about this analysis
+      placeholder: |
+        Example:
+        - The results look accurate based on my understanding
+        - I noticed an issue with...
+        - Suggestion for improvement...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: Suggestions (Optional)
+      description: If you have specific suggestions, patches, or JSON corrections, please provide them here
+      placeholder: |
+        Optional JSON/patch suggestions:
+        - Suggested code changes
+        - Data corrections
+        - Algorithm improvements
+
+  - type: input
+    id: file
+    attributes:
+      label: File Reference (Auto-filled)
+      description: The file being reviewed (will be auto-filled from the review button)
+      placeholder: docs/index.html
+      value: docs/index.html
