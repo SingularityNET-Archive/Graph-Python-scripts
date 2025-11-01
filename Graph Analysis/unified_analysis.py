@@ -453,7 +453,6 @@ def write_html_report(
             <!-- Co-attendance Degree Tab -->
             <div id="coattendance" class="tab-pane">
                 <h2>Degree (Co-attendance) Analysis</h2>
-                """ + _review_form("coattendance") + """
                 <p class="explanation">People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.</p>
                 
                 <h3>Interactive Network Visualization</h3>
@@ -490,12 +489,12 @@ def write_html_report(
             f.write(f"                        <tr><td>{d}</td><td>{c}</td></tr>\n")
         f.write("""                    </tbody>
                 </table>
+                """ + _review_form("coattendance") + """
             </div>
 
             <!-- Field Degree Tab -->
             <div id="field-degree" class="tab-pane">
                 <h2>JSON Field Degree Analysis</h2>
-                """ + _review_form("field-degree") + """
                 <p class="explanation">Fields are connected when they appear together inside the same JSON object; a field's degree is the number of distinct fields it co-occurs with.</p>
                 
                 <h3>Top Fields by Degree</h3>
@@ -524,12 +523,12 @@ def write_html_report(
             f.write(f"                        <tr><td>{d}</td><td>{c}</td></tr>\n")
         f.write("""                    </tbody>
                 </table>
+                """ + _review_form("field-degree") + """
             </div>
 
             <!-- Path Structure Tab -->
             <div id="path-structure" class="tab-pane">
                 <h2>JSON Path Structure Analysis</h2>
-                """ + _review_form("path-structure") + """
                 <p class="explanation">Each JSON path represents a unique nested route (keys/array indices); depth shows how deeply information is nested.</p>
                 
                 <ul class="summary-list">
@@ -558,12 +557,12 @@ def write_html_report(
             f.write(f"                        <tr><td>{i}</td><td><code>{parent}</code></td><td>{cnt}</td></tr>\n")
         f.write("""                    </tbody>
                 </table>
+                """ + _review_form("path-structure") + """
             </div>
 
             <!-- Centrality Tab -->
             <div id="centrality" class="tab-pane">
                 <h2>Field Centrality (Co-occurrence)</h2>
-                """ + _review_form("centrality") + """
                 <p class="explanation">Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).</p>
                 
                 <table>
@@ -584,12 +583,12 @@ def write_html_report(
             )
         f.write("""                    </tbody>
                 </table>
+                """ + _review_form("centrality") + """
             </div>
 
             <!-- Clustering Tab -->
             <div id="clustering" class="tab-pane">
                 <h2>Clustering (Field Co-occurrence Graph)</h2>
-                """ + _review_form("clustering") + """
                 <p class="explanation">Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).</p>
                 
                 <p><strong>Average Clustering Coefficient:</strong> """)
@@ -609,12 +608,12 @@ def write_html_report(
             f.write(f"                        <tr><td>{i}</td><td>{node}</td><td>{val:.3f}</td></tr>\n")
         f.write("""                    </tbody>
                 </table>
+                """ + _review_form("clustering") + """
             </div>
 
             <!-- Connected Components Tab -->
             <div id="components" class="tab-pane">
                 <h2>Connected Components (Field Co-occurrence Graph)</h2>
-                """ + _review_form("components") + """
                 <p class="explanation">Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.</p>
                 
                 <ul class="summary-list">
@@ -628,6 +627,7 @@ def write_html_report(
         for n in components["largest_component_sample"][:10]:
             f.write(f"                    <li>{n}</li>\n")
         f.write("""                </ul>
+                """ + _review_form("components") + """
             </div>
 
             <!-- Audit Tab -->
