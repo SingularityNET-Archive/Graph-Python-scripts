@@ -46,15 +46,24 @@ RATING_LABELS = {
 
 
 def extract_method_from_body(body: str) -> Optional[str]:
-    """Extract method name from issue body (template field or query param)."""
+    """Extract method name from issue body (markdown template or query param)."""
     if not body:
         return None
 
-    # Try to find method from template field (dropdown)
+    # Try to find method from markdown template format: **Method:** method_name
+    method_match = re.search(r'\*\*Method:\*\*\s*([^\n]+)', body, re.IGNORECASE)
+    if method_match:
+        method = method_match.group(1).strip().lower()
+        # Remove markdown code blocks and normalize
+        method = method.replace("`", "").replace("<!--", "").replace("-->", "").strip()
+        method = method.replace(" ", "-").replace("_", "-")
+        if method in METHODS:
+            return method
+
+    # Try to find from template field format (old YAML form): ### Analysis Method
     method_match = re.search(r'###\s*Analysis Method\s*\n\s*([^\n]+)', body, re.IGNORECASE)
     if method_match:
         method = method_match.group(1).strip().lower()
-        # Normalize common variations
         method = method.replace(" ", "-").replace("_", "-")
         if method in METHODS:
             return method
@@ -82,11 +91,20 @@ def extract_rating_from_labels(labels: List[Any]) -> Optional[str]:
 
 
 def extract_rating_from_body(body: str) -> Optional[str]:
-    """Extract rating from issue body (template dropdown field)."""
+    """Extract rating from issue body (markdown template checkboxes)."""
     if not body:
         return None
     
-    # Try to find rating from template field (dropdown)
+    # Try to find rating from markdown template checkboxes
+    # Format: - [x] Correct or - [x] Needs Review or - [x] Incorrect
+    if re.search(r'-\s*\[x\]\s*Correct', body, re.IGNORECASE):
+        return "correct"
+    elif re.search(r'-\s*\[x\]\s*Incorrect', body, re.IGNORECASE):
+        return "incorrect"
+    elif re.search(r'-\s*\[x\]\s*Needs Review', body, re.IGNORECASE):
+        return "needs-review"
+    
+    # Fallback: Try to find rating from old template field (dropdown)
     rating_match = re.search(r'###\s*Rating\s*\n\s*([^\n]+)', body, re.IGNORECASE)
     if rating_match:
         rating = rating_match.group(1).strip()
