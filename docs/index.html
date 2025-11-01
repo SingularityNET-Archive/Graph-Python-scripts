@@ -21,7 +21,7 @@
     <div class="container">
         <header>
             <h1>Unified Graph Analysis Report</h1>
-            <p class="timestamp">Generated on: <strong>2025-11-01 18:28:12</strong></p>
+            <p class="timestamp">Generated on: <strong>2025-11-01 18:42:49</strong></p>
         </header>
 
         <div class="tabs">
@@ -53,7 +53,42 @@
             <!-- Co-attendance Degree Tab -->
             <div id="coattendance" class="tab-pane">
                 <h2>Degree (Co-attendance) Analysis</h2>
-                <a href="https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body=%2A%2AMethod%3A%2A%2A%20coattendance%0A%0A%2A%2AFile%3A%2A%2A%20docs/index.html" class="review-button" target="_blank" title="Opens GitHub Issue with review form">Review This Analysis</a>
+                
+    <div class="review-section">
+        <h3>Review This Analysis</h3>
+        <form id="review-form-coattendance" class="review-form" onsubmit="submitReview(event, 'coattendance')">
+            <div class="form-group">
+                <label for="rating-coattendance">Rating:</label>
+                <select id="rating-coattendance" name="rating" required>
+                    <option value="">Select a rating...</option>
+                    <option value="correct">Correct - The analysis results appear accurate</option>
+                    <option value="needs-review">Needs Review - The analysis may have issues</option>
+                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment-coattendance">Comments:</label>
+                <textarea id="comment-coattendance" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-coattendance">Your Name (optional):</label>
+                <input type="text" id="reviewer-coattendance" name="reviewer" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="suggestions-coattendance">Suggestions (optional):</label>
+                <textarea id="suggestions-coattendance" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
+            </div>
+            <input type="hidden" name="method" value="coattendance">
+            <input type="hidden" name="file" value="docs/index.html">
+            <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="review-success-coattendance" class="review-success" style="display: none;">
+            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
+            <button onclick="downloadReviewJSON('coattendance')" class="download-btn">Download Review as JSON</button>
+        </div>
+        <div id="reviews-list-coattendance" class="reviews-list"></div>
+    </div>
+    
                 <p class="explanation">People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.</p>
                 
                 <h3>Interactive Network Visualization</h3>
@@ -150,7 +185,42 @@
             <!-- Field Degree Tab -->
             <div id="field-degree" class="tab-pane">
                 <h2>JSON Field Degree Analysis</h2>
-                <a href="https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body=%2A%2AMethod%3A%2A%2A%20field-degree%0A%0A%2A%2AFile%3A%2A%2A%20docs/index.html" class="review-button" target="_blank" title="Opens GitHub Issue with review form">Review This Analysis</a>
+                
+    <div class="review-section">
+        <h3>Review This Analysis</h3>
+        <form id="review-form-field-degree" class="review-form" onsubmit="submitReview(event, 'field-degree')">
+            <div class="form-group">
+                <label for="rating-field-degree">Rating:</label>
+                <select id="rating-field-degree" name="rating" required>
+                    <option value="">Select a rating...</option>
+                    <option value="correct">Correct - The analysis results appear accurate</option>
+                    <option value="needs-review">Needs Review - The analysis may have issues</option>
+                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment-field-degree">Comments:</label>
+                <textarea id="comment-field-degree" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-field-degree">Your Name (optional):</label>
+                <input type="text" id="reviewer-field-degree" name="reviewer" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="suggestions-field-degree">Suggestions (optional):</label>
+                <textarea id="suggestions-field-degree" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
+            </div>
+            <input type="hidden" name="method" value="field-degree">
+            <input type="hidden" name="file" value="docs/index.html">
+            <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="review-success-field-degree" class="review-success" style="display: none;">
+            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
+            <button onclick="downloadReviewJSON('field-degree')" class="download-btn">Download Review as JSON</button>
+        </div>
+        <div id="reviews-list-field-degree" class="reviews-list"></div>
+    </div>
+    
                 <p class="explanation">Fields are connected when they appear together inside the same JSON object; a field's degree is the number of distinct fields it co-occurs with.</p>
                 
                 <h3>Top Fields by Degree</h3>
@@ -160,16 +230,16 @@
                         <tr><th>Rank</th><th>Field</th><th>Degree</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>1</td><td>purpose</td><td>11</td></tr>
-                        <tr><td>2</td><td>documenter</td><td>11</td></tr>
-                        <tr><td>3</td><td>typeOfMeeting</td><td>11</td></tr>
-                        <tr><td>4</td><td>date</td><td>11</td></tr>
-                        <tr><td>5</td><td>workingDocs</td><td>11</td></tr>
-                        <tr><td>6</td><td>peoplePresent</td><td>11</td></tr>
-                        <tr><td>7</td><td>host</td><td>11</td></tr>
+                        <tr><td>1</td><td>documenter</td><td>11</td></tr>
+                        <tr><td>2</td><td>typeOfMeeting</td><td>11</td></tr>
+                        <tr><td>3</td><td>date</td><td>11</td></tr>
+                        <tr><td>4</td><td>workingDocs</td><td>11</td></tr>
+                        <tr><td>5</td><td>purpose</td><td>11</td></tr>
+                        <tr><td>6</td><td>host</td><td>11</td></tr>
+                        <tr><td>7</td><td>peoplePresent</td><td>11</td></tr>
                         <tr><td>8</td><td>status</td><td>11</td></tr>
                         <tr><td>9</td><td>meetingVideoLink</td><td>10</td></tr>
-                        <tr><td>10</td><td>tags</td><td>9</td></tr>
+                        <tr><td>10</td><td>meetingInfo</td><td>9</td></tr>
                     </tbody>
                 </table>
 
@@ -197,7 +267,42 @@
             <!-- Path Structure Tab -->
             <div id="path-structure" class="tab-pane">
                 <h2>JSON Path Structure Analysis</h2>
-                <a href="https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body=%2A%2AMethod%3A%2A%2A%20path-structure%0A%0A%2A%2AFile%3A%2A%2A%20docs/index.html" class="review-button" target="_blank" title="Opens GitHub Issue with review form">Review This Analysis</a>
+                
+    <div class="review-section">
+        <h3>Review This Analysis</h3>
+        <form id="review-form-path-structure" class="review-form" onsubmit="submitReview(event, 'path-structure')">
+            <div class="form-group">
+                <label for="rating-path-structure">Rating:</label>
+                <select id="rating-path-structure" name="rating" required>
+                    <option value="">Select a rating...</option>
+                    <option value="correct">Correct - The analysis results appear accurate</option>
+                    <option value="needs-review">Needs Review - The analysis may have issues</option>
+                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment-path-structure">Comments:</label>
+                <textarea id="comment-path-structure" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-path-structure">Your Name (optional):</label>
+                <input type="text" id="reviewer-path-structure" name="reviewer" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="suggestions-path-structure">Suggestions (optional):</label>
+                <textarea id="suggestions-path-structure" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
+            </div>
+            <input type="hidden" name="method" value="path-structure">
+            <input type="hidden" name="file" value="docs/index.html">
+            <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="review-success-path-structure" class="review-success" style="display: none;">
+            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
+            <button onclick="downloadReviewJSON('path-structure')" class="download-btn">Download Review as JSON</button>
+        </div>
+        <div id="reviews-list-path-structure" class="reviews-list"></div>
+    </div>
+    
                 <p class="explanation">Each JSON path represents a unique nested route (keys/array indices); depth shows how deeply information is nested.</p>
                 
                 <ul class="summary-list">
@@ -245,7 +350,42 @@
             <!-- Centrality Tab -->
             <div id="centrality" class="tab-pane">
                 <h2>Field Centrality (Co-occurrence)</h2>
-                <a href="https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body=%2A%2AMethod%3A%2A%2A%20centrality%0A%0A%2A%2AFile%3A%2A%2A%20docs/index.html" class="review-button" target="_blank" title="Opens GitHub Issue with review form">Review This Analysis</a>
+                
+    <div class="review-section">
+        <h3>Review This Analysis</h3>
+        <form id="review-form-centrality" class="review-form" onsubmit="submitReview(event, 'centrality')">
+            <div class="form-group">
+                <label for="rating-centrality">Rating:</label>
+                <select id="rating-centrality" name="rating" required>
+                    <option value="">Select a rating...</option>
+                    <option value="correct">Correct - The analysis results appear accurate</option>
+                    <option value="needs-review">Needs Review - The analysis may have issues</option>
+                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment-centrality">Comments:</label>
+                <textarea id="comment-centrality" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-centrality">Your Name (optional):</label>
+                <input type="text" id="reviewer-centrality" name="reviewer" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="suggestions-centrality">Suggestions (optional):</label>
+                <textarea id="suggestions-centrality" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
+            </div>
+            <input type="hidden" name="method" value="centrality">
+            <input type="hidden" name="file" value="docs/index.html">
+            <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="review-success-centrality" class="review-success" style="display: none;">
+            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
+            <button onclick="downloadReviewJSON('centrality')" class="download-btn">Download Review as JSON</button>
+        </div>
+        <div id="reviews-list-centrality" class="reviews-list"></div>
+    </div>
+    
                 <p class="explanation">Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).</p>
                 
                 <table>
@@ -253,16 +393,16 @@
                         <tr><th>Rank</th><th>Field</th><th>Degree</th><th>Betweenness</th><th>Closeness</th><th>Eigenvector</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>1</td><td>purpose</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>2</td><td>documenter</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>3</td><td>typeOfMeeting</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>4</td><td>date</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>5</td><td>workingDocs</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>6</td><td>peoplePresent</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
-                        <tr><td>7</td><td>host</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>1</td><td>documenter</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>2</td><td>typeOfMeeting</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>3</td><td>date</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>4</td><td>workingDocs</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>5</td><td>purpose</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>6</td><td>host</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
+                        <tr><td>7</td><td>peoplePresent</td><td>0.256</td><td>0.001</td><td>0.256</td><td>0.309</td></tr>
                         <tr><td>8</td><td>status</td><td>0.256</td><td>0.030</td><td>0.256</td><td>0.000</td></tr>
                         <tr><td>9</td><td>meetingVideoLink</td><td>0.233</td><td>0.000</td><td>0.234</td><td>0.290</td></tr>
-                        <tr><td>10</td><td>tags</td><td>0.209</td><td>0.000</td><td>0.209</td><td>0.000</td></tr>
+                        <tr><td>10</td><td>meetingInfo</td><td>0.209</td><td>0.000</td><td>0.209</td><td>0.000</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -270,7 +410,42 @@
             <!-- Clustering Tab -->
             <div id="clustering" class="tab-pane">
                 <h2>Clustering (Field Co-occurrence Graph)</h2>
-                <a href="https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body=%2A%2AMethod%3A%2A%2A%20clustering%0A%0A%2A%2AFile%3A%2A%2A%20docs/index.html" class="review-button" target="_blank" title="Opens GitHub Issue with review form">Review This Analysis</a>
+                
+    <div class="review-section">
+        <h3>Review This Analysis</h3>
+        <form id="review-form-clustering" class="review-form" onsubmit="submitReview(event, 'clustering')">
+            <div class="form-group">
+                <label for="rating-clustering">Rating:</label>
+                <select id="rating-clustering" name="rating" required>
+                    <option value="">Select a rating...</option>
+                    <option value="correct">Correct - The analysis results appear accurate</option>
+                    <option value="needs-review">Needs Review - The analysis may have issues</option>
+                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment-clustering">Comments:</label>
+                <textarea id="comment-clustering" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-clustering">Your Name (optional):</label>
+                <input type="text" id="reviewer-clustering" name="reviewer" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="suggestions-clustering">Suggestions (optional):</label>
+                <textarea id="suggestions-clustering" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
+            </div>
+            <input type="hidden" name="method" value="clustering">
+            <input type="hidden" name="file" value="docs/index.html">
+            <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="review-success-clustering" class="review-success" style="display: none;">
+            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
+            <button onclick="downloadReviewJSON('clustering')" class="download-btn">Download Review as JSON</button>
+        </div>
+        <div id="reviews-list-clustering" class="reviews-list"></div>
+    </div>
+    
                 <p class="explanation">Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).</p>
                 
                 <p><strong>Average Clustering Coefficient:</strong> 0.882</p>
@@ -282,14 +457,14 @@
                         <tr><th>Rank</th><th>Field</th><th>Clustering</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>1</td><td>tags</td><td>1.000</td></tr>
-                        <tr><td>2</td><td>canceledSummary</td><td>1.000</td></tr>
-                        <tr><td>3</td><td>agendaItems</td><td>1.000</td></tr>
+                        <tr><td>1</td><td>meetingInfo</td><td>1.000</td></tr>
+                        <tr><td>2</td><td>agendaItems</td><td>1.000</td></tr>
+                        <tr><td>3</td><td>workgroup_id</td><td>1.000</td></tr>
                         <tr><td>4</td><td>noSummaryGiven</td><td>1.000</td></tr>
-                        <tr><td>5</td><td>workgroup_id</td><td>1.000</td></tr>
-                        <tr><td>6</td><td>meetingInfo</td><td>1.000</td></tr>
-                        <tr><td>7</td><td>type</td><td>1.000</td></tr>
-                        <tr><td>8</td><td>workgroup</td><td>1.000</td></tr>
+                        <tr><td>5</td><td>workgroup</td><td>1.000</td></tr>
+                        <tr><td>6</td><td>canceledSummary</td><td>1.000</td></tr>
+                        <tr><td>7</td><td>tags</td><td>1.000</td></tr>
+                        <tr><td>8</td><td>type</td><td>1.000</td></tr>
                         <tr><td>9</td><td>timestampedVideo</td><td>1.000</td></tr>
                         <tr><td>10</td><td>assignee</td><td>1.000</td></tr>
                     </tbody>
@@ -299,7 +474,42 @@
             <!-- Connected Components Tab -->
             <div id="components" class="tab-pane">
                 <h2>Connected Components (Field Co-occurrence Graph)</h2>
-                <a href="https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body=%2A%2AMethod%3A%2A%2A%20components%0A%0A%2A%2AFile%3A%2A%2A%20docs/index.html" class="review-button" target="_blank" title="Opens GitHub Issue with review form">Review This Analysis</a>
+                
+    <div class="review-section">
+        <h3>Review This Analysis</h3>
+        <form id="review-form-components" class="review-form" onsubmit="submitReview(event, 'components')">
+            <div class="form-group">
+                <label for="rating-components">Rating:</label>
+                <select id="rating-components" name="rating" required>
+                    <option value="">Select a rating...</option>
+                    <option value="correct">Correct - The analysis results appear accurate</option>
+                    <option value="needs-review">Needs Review - The analysis may have issues</option>
+                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment-components">Comments:</label>
+                <textarea id="comment-components" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-components">Your Name (optional):</label>
+                <input type="text" id="reviewer-components" name="reviewer" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="suggestions-components">Suggestions (optional):</label>
+                <textarea id="suggestions-components" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
+            </div>
+            <input type="hidden" name="method" value="components">
+            <input type="hidden" name="file" value="docs/index.html">
+            <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="review-success-components" class="review-success" style="display: none;">
+            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
+            <button onclick="downloadReviewJSON('components')" class="download-btn">Download Review as JSON</button>
+        </div>
+        <div id="reviews-list-components" class="reviews-list"></div>
+    </div>
+    
                 <p class="explanation">Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.</p>
                 
                 <ul class="summary-list">
@@ -309,66 +519,26 @@
 
                 <h3>Sample of Largest Component Nodes (top 10)</h3>
                 <ul class="component-list">
-                    <li>purpose</li>
+                    <li>miroBoardLink</li>
+                    <li>otherMediaLink</li>
+                    <li>meetingVideoLink</li>
                     <li>documenter</li>
+                    <li>mediaLink</li>
                     <li>typeOfMeeting</li>
                     <li>date</li>
                     <li>workingDocs</li>
-                    <li>peoplePresent</li>
-                    <li>miroBoardLink</li>
+                    <li>purpose</li>
                     <li>host</li>
-                    <li>timestampedVideo</li>
-                    <li>meetingVideoLink</li>
                 </ul>
             </div>
 
             <!-- Audit Tab -->
             <div id="audit" class="tab-pane">
                 <h2>Review Audit</h2>
-                <p class="explanation">Community review scores and feedback for each analysis method.</p>
-                
-                <div id="audit-loading" style="text-align: center; padding: 20px;">
-                    <p>Loading audit data...</p>
-                </div>
-                
-                <div id="audit-content" style="display: none;">
-                    <p id="audit-last-updated" class="explanation" style="font-weight: bold; margin-bottom: 20px;"></p>
-                    
-                    <h3>Trust Scores by Method</h3>
-                    <p class="explanation">Percentage of reviews rated as "Correct" for each analysis method.</p>
-                    <table id="trust-scores-table">
-                        <thead>
-                            <tr><th>Method</th><th>Trust Score</th><th>Total Reviews</th><th>Correct</th><th>Incorrect</th><th>Needs Review</th></tr>
-                        </thead>
-                        <tbody id="trust-scores-body">
-                        </tbody>
-                    </table>
-                    
-                    <h3>Rating Distribution</h3>
-                    <p class="explanation">Overall distribution of review ratings across all methods.</p>
-                    <div id="rating-chart-container" style="margin: 20px 0; text-align: center;">
-                        <canvas id="rating-chart" width="400" height="400"></canvas>
-                    </div>
-                    
-                    <h3>Review Comments</h3>
-                    <p class="explanation">All review comments submitted by the community.</p>
-                    <table id="review-comments-table">
-                        <thead>
-                            <tr><th>Method</th><th>Rating</th><th>Comment</th><th>Author</th><th>Date</th><th>Issue</th></tr>
-                        </thead>
-                        <tbody id="review-comments-body">
-                        </tbody>
-                    </table>
-                    
-                    <p style="margin-top: 20px;">
-                        <a href="audit/reviews.json" target="_blank" class="review-button">View Raw JSON Data</a>
-                    </p>
-                </div>
-                
-                <div id="audit-error" style="display: none; color: #d73a49; padding: 20px; background-color: #ffeef0; border-radius: 6px;">
-                    <p><strong>Error loading audit data:</strong> <span id="audit-error-message"></span></p>
-                    <p>This may be because no reviews have been submitted yet, or the data file doesn't exist.</p>
-                </div>
+                <p class="explanation">Community review scores and feedback for each analysis method. Reviews are stored locally in your browser and can also be loaded from the JSON file.</p>
+                <p class="explanation" style="color: #586069; font-size: 0.9em; margin-top: 10px;">
+                    <strong>Note:</strong> Reviews are stored in your browser's localStorage. To share reviews or make them permanent, use the "Download Review as JSON" button and submit the JSON file to the repository.
+                </p>
             </div>
         </div>
     </div>
