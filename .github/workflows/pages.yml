@@ -8,6 +8,7 @@ on:
       - 'reports/unified_analysis_report_explained.md'
       - 'docs/script.js'
       - 'docs/style.css'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:  # Allow manual trigger
 
 permissions:
