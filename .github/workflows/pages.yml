@@ -47,7 +47,7 @@ jobs:
         if git diff --staged --quiet; then
           echo "No changes to commit"
         else
-          git commit -m "Auto-update HTML report and assets [skip ci]"
+          git commit -m "Auto-update HTML report and assets"
           git push origin HEAD:main
         fi
 
