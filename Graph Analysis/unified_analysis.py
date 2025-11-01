@@ -343,15 +343,19 @@ def ensure_iterable_records(data: Any) -> List[Any]:
 
 def _review_button(method_name: str) -> str:
     """Generate HTML for a review button linking to GitHub Issues."""
-    # GitHub Issue Forms: use template name WITHOUT .yml extension
-    # The template parameter should load the form template
-    # Note: If config.yml exists, GitHub may show template chooser first
+    # GitHub Issue Forms: link to issues/new page
+    # If template parameter works, it will load automatically
+    # Otherwise, users will see template chooser and can select "Analysis Review"
+    # Include method info in body as pre-fill for reference
     body_text = f"**Method:** {method_name}\n\n**File:** docs/index.html\n\n---\n\n"
     # URL encode the body text properly
     encoded_body = urllib.parse.quote(body_text)
-    # Template name without extension - GitHub's standard format
+    
+    # Use template parameter (GitHub's documented format for Issue Forms)
+    # Template name without .yml extension
     url = f"https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body={encoded_body}"
-    return f'<a href="{url}" class="review-button" target="_blank">Review This Analysis</a>'
+    
+    return f'<a href="{url}" class="review-button" target="_blank" title="Opens GitHub Issue template. If template doesn\'t load automatically, select \'Analysis Review\' from the template chooser.">Review This Analysis</a>'
 
 
 def write_html_report(
