@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import urllib.parse
 from datetime import datetime
 from itertools import combinations
 from typing import Any, Dict, Iterable, List, Tuple
@@ -342,7 +343,13 @@ def ensure_iterable_records(data: Any) -> List[Any]:
 
 def _review_button(method_name: str) -> str:
     """Generate HTML for a review button linking to GitHub Issues."""
-    url = f"https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review.yml&method={method_name}&file=docs/index.html"
+    # GitHub uses template name without .yml extension
+    # Note: GitHub doesn't support pre-filling form fields via URL params,
+    # but we include method in body text for reference
+    body_text = f"Method: {method_name}\n\nFile: docs/index.html\n\n"
+    # URL encode the body text properly
+    encoded_body = urllib.parse.quote(body_text)
+    url = f"https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body={encoded_body}"
     return f'<a href="{url}" class="review-button" target="_blank">Review This Analysis</a>'
 
 
