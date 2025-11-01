@@ -95,27 +95,213 @@ header h1 {
     padding-bottom: 10px;
 }
 
-/* Review Button */
-.review-button {
-    display: inline-block;
-    margin: 10px 0 15px 0;
-    padding: 8px 16px;
-    background-color: #0366d6;
-    color: #ffffff;
-    text-decoration: none;
+/* Review Section */
+.review-section {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
     border-radius: 6px;
-    font-size: 0.9em;
+}
+
+.review-form {
+    margin-top: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
     font-weight: 500;
+    color: #24292e;
+}
+
+.form-group select,
+.form-group textarea,
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d1d5da;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.form-group select {
+    cursor: pointer;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.submit-review-btn {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
     transition: background-color 0.2s;
 }
 
-.review-button:hover {
-    background-color: #0256c2;
-    color: #ffffff;
+.submit-review-btn:hover {
+    background-color: #22863a;
 }
 
-.review-button:active {
-    background-color: #014fa8;
+.submit-review-btn:active {
+    background-color: #1e7e34;
+}
+
+.review-success {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    color: #155724;
+}
+
+.download-btn {
+    margin-top: 10px;
+    background-color: #0366d6;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.download-btn:hover {
+    background-color: #0256c2;
+}
+
+.reviews-list {
+    margin-top: 20px;
+}
+
+.review-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    border-left: 4px solid #0366d6;
+}
+
+.review-item.rating-correct {
+    border-left-color: #28a745;
+}
+
+.review-item.rating-incorrect {
+    border-left-color: #d73a49;
+}
+
+.review-item.rating-needs-review {
+    border-left-color: #f66a0a;
+}
+
+.review-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.review-item-meta {
+    font-size: 12px;
+    color: #586069;
+}
+
+.review-item-rating {
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.review-item-rating.correct {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.review-item-rating.incorrect {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.review-item-rating.needs-review {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.review-item-comment {
+    margin-top: 10px;
+    color: #24292e;
+    line-height: 1.5;
+}
+
+.review-item-suggestions {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f6f8fa;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #586069;
+}
+
+/* Audit Stats */
+.audit-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.method-stat-card {
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.method-stat-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #24292e;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.stat-row span:first-child {
+    color: #586069;
+    font-size: 0.9em;
+}
+
+.stat-row strong {
+    color: #24292e;
+    font-size: 1.1em;
 }
 
 .tab-pane h3 {

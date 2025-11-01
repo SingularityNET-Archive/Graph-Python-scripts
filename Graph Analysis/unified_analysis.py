@@ -341,19 +341,44 @@ def ensure_iterable_records(data: Any) -> List[Any]:
 
 # ---------------- HTML Report Writer ----------------
 
-def _review_button(method_name: str) -> str:
-    """Generate HTML for a review button linking to GitHub Issues."""
-    # Use Markdown template - more reliable than YAML forms
-    # Pre-fill method in body text so it appears in the template
-    body_text = f"**Method:** {method_name}\n\n**File:** docs/index.html"
-    # URL encode the body text properly
-    encoded_body = urllib.parse.quote(body_text)
-    
-    # Use Markdown template - GitHub handles these more reliably
-    # For markdown templates, use filename WITHOUT extension
-    url = f"https://github.com/SingularityNET-Archive/Graph-Python-scripts/issues/new?template=analysis_review&body={encoded_body}"
-    
-    return f'<a href="{url}" class="review-button" target="_blank" title="Opens GitHub Issue with review form">Review This Analysis</a>'
+def _review_form(method_name: str) -> str:
+    """Generate HTML for an in-dashboard review form."""
+    return f"""
+    <div class="review-section">
+        <h3>Review This Analysis</h3>
+        <form id="review-form-{method_name}" class="review-form" onsubmit="submitReview(event, '{method_name}')">
+            <div class="form-group">
+                <label for="rating-{method_name}">Rating:</label>
+                <select id="rating-{method_name}" name="rating" required>
+                    <option value="">Select a rating...</option>
+                    <option value="correct">Correct - The analysis results appear accurate</option>
+                    <option value="needs-review">Needs Review - The analysis may have issues</option>
+                    <option value="incorrect">Incorrect - The analysis results appear wrong</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment-{method_name}">Comments:</label>
+                <textarea id="comment-{method_name}" name="comment" rows="4" placeholder="Provide your feedback, observations, or concerns about this analysis..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reviewer-{method_name}">Your Name (optional):</label>
+                <input type="text" id="reviewer-{method_name}" name="reviewer" placeholder="Anonymous">
+            </div>
+            <div class="form-group">
+                <label for="suggestions-{method_name}">Suggestions (optional):</label>
+                <textarea id="suggestions-{method_name}" name="suggestions" rows="3" placeholder="Optional: Suggested improvements, patches, or corrections..."></textarea>
+            </div>
+            <input type="hidden" name="method" value="{method_name}">
+            <input type="hidden" name="file" value="docs/index.html">
+            <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="review-success-{method_name}" class="review-success" style="display: none;">
+            <p>✓ Review submitted successfully! It will appear in the Audit tab.</p>
+            <button onclick="downloadReviewJSON('{method_name}')" class="download-btn">Download Review as JSON</button>
+        </div>
+        <div id="reviews-list-{method_name}" class="reviews-list"></div>
+    </div>
+    """
 
 
 def write_html_report(
@@ -428,7 +453,7 @@ def write_html_report(
             <!-- Co-attendance Degree Tab -->
             <div id="coattendance" class="tab-pane">
                 <h2>Degree (Co-attendance) Analysis</h2>
-                """ + _review_button("coattendance") + """
+                """ + _review_form("coattendance") + """
                 <p class="explanation">People are connected if they attend the same meeting; a person's degree is how many unique people they co-attended with.</p>
                 
                 <h3>Interactive Network Visualization</h3>
@@ -608,50 +633,10 @@ def write_html_report(
             <!-- Audit Tab -->
             <div id="audit" class="tab-pane">
                 <h2>Review Audit</h2>
-                <p class="explanation">Community review scores and feedback for each analysis method.</p>
-                
-                <div id="audit-loading" style="text-align: center; padding: 20px;">
-                    <p>Loading audit data...</p>
-                </div>
-                
-                <div id="audit-content" style="display: none;">
-                    <p id="audit-last-updated" class="explanation" style="font-weight: bold; margin-bottom: 20px;"></p>
-                    
-                    <h3>Trust Scores by Method</h3>
-                    <p class="explanation">Percentage of reviews rated as "Correct" for each analysis method.</p>
-                    <table id="trust-scores-table">
-                        <thead>
-                            <tr><th>Method</th><th>Trust Score</th><th>Total Reviews</th><th>Correct</th><th>Incorrect</th><th>Needs Review</th></tr>
-                        </thead>
-                        <tbody id="trust-scores-body">
-                        </tbody>
-                    </table>
-                    
-                    <h3>Rating Distribution</h3>
-                    <p class="explanation">Overall distribution of review ratings across all methods.</p>
-                    <div id="rating-chart-container" style="margin: 20px 0; text-align: center;">
-                        <canvas id="rating-chart" width="400" height="400"></canvas>
-                    </div>
-                    
-                    <h3>Review Comments</h3>
-                    <p class="explanation">All review comments submitted by the community.</p>
-                    <table id="review-comments-table">
-                        <thead>
-                            <tr><th>Method</th><th>Rating</th><th>Comment</th><th>Author</th><th>Date</th><th>Issue</th></tr>
-                        </thead>
-                        <tbody id="review-comments-body">
-                        </tbody>
-                    </table>
-                    
-                    <p style="margin-top: 20px;">
-                        <a href="audit/reviews.json" target="_blank" class="review-button">View Raw JSON Data</a>
-                    </p>
-                </div>
-                
-                <div id="audit-error" style="display: none; color: #d73a49; padding: 20px; background-color: #ffeef0; border-radius: 6px;">
-                    <p><strong>Error loading audit data:</strong> <span id="audit-error-message"></span></p>
-                    <p>This may be because no reviews have been submitted yet, or the data file doesn't exist.</p>
-                </div>
+                <p class="explanation">Community review scores and feedback for each analysis method. Reviews are stored locally in your browser and can also be loaded from the JSON file.</p>
+                <p class="explanation" style="color: #586069; font-size: 0.9em; margin-top: 10px;">
+                    <strong>Note:</strong> Reviews are stored in your browser's localStorage. To share reviews or make them permanent, use the "Download Review as JSON" button and submit the JSON file to the repository.
+                </p>
             </div>
         </div>
     </div>

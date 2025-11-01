@@ -450,3 +450,292 @@ window.addEventListener('popstate', function() {
     }
 });
 
+// Review management functions
+const REVIEWS_STORAGE_KEY = 'analysis_reviews';
+const REVIEWS_JSON_URL = 'audit/reviews.json';
+
+// Load reviews from localStorage
+function loadReviewsFromStorage() {
+    try {
+        const reviewsJson = localStorage.getItem(REVIEWS_STORAGE_KEY);
+        return reviewsJson ? JSON.parse(reviewsJson) : [];
+    } catch (error) {
+        console.error('Error loading reviews from localStorage:', error);
+        return [];
+    }
+}
+
+// Save reviews to localStorage
+function saveReviewsToStorage(reviews) {
+    try {
+        localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(reviews));
+    } catch (error) {
+        console.error('Error saving reviews to localStorage:', error);
+    }
+}
+
+// Load reviews from JSON file
+async function loadReviewsFromJSON() {
+    try {
+        const response = await fetch(REVIEWS_JSON_URL);
+        if (!response.ok) {
+            return { methods: {}, last_updated: null };
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error loading reviews from JSON:', error);
+        return { methods: {}, last_updated: null };
+    }
+}
+
+// Submit review form
+function submitReview(event, methodName) {
+    event.preventDefault();
+    
+    const form = document.getElementById(`review-form-${methodName}`);
+    const formData = new FormData(form);
+    
+    const review = {
+        id: Date.now().toString(),
+        method: methodName,
+        rating: formData.get('rating'),
+        comment: formData.get('comment'),
+        reviewer: formData.get('reviewer') || 'Anonymous',
+        suggestions: formData.get('suggestions') || '',
+        file: formData.get('file'),
+        timestamp: new Date().toISOString()
+    };
+    
+    // Save to localStorage
+    const reviews = loadReviewsFromStorage();
+    reviews.push(review);
+    saveReviewsToStorage(reviews);
+    
+    // Show success message
+    const successDiv = document.getElementById(`review-success-${methodName}`);
+    if (successDiv) {
+        successDiv.style.display = 'block';
+    }
+    
+    // Reset form
+    form.reset();
+    
+    // Update reviews list
+    displayReviewsForMethod(methodName);
+    
+    // Update audit tab if visible
+    if (document.getElementById('audit').classList.contains('active')) {
+        loadAuditData();
+    }
+    
+    return false;
+}
+
+// Display reviews for a specific method
+function displayReviewsForMethod(methodName) {
+    const reviewsList = document.getElementById(`reviews-list-${methodName}`);
+    if (!reviewsList) return;
+    
+    const allReviews = loadReviewsFromStorage();
+    const methodReviews = allReviews.filter(r => r.method === methodName);
+    
+    if (methodReviews.length === 0) {
+        reviewsList.innerHTML = '<p style="color: #586069; font-size: 0.9em;">No reviews yet. Be the first to submit a review!</p>';
+        return;
+    }
+    
+    reviewsList.innerHTML = '<h4>Previous Reviews</h4>' + methodReviews.map(review => {
+        const date = new Date(review.timestamp).toLocaleString();
+        return `
+            <div class="review-item rating-${review.rating}">
+                <div class="review-item-header">
+                    <span class="review-item-rating rating-${review.rating}">${review.rating.toUpperCase()}</span>
+                    <span class="review-item-meta">${review.reviewer} • ${date}</span>
+                </div>
+                <div class="review-item-comment">${escapeHtml(review.comment)}</div>
+                ${review.suggestions ? `<div class="review-item-suggestions"><strong>Suggestions:</strong> ${escapeHtml(review.suggestions)}</div>` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Download review as JSON
+function downloadReviewJSON(methodName) {
+    const allReviews = loadReviewsFromStorage();
+    const methodReviews = allReviews.filter(r => r.method === methodName);
+    
+    const dataStr = JSON.stringify(methodReviews, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `review_${methodName}_${Date.now()}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+}
+
+// Load and display reviews when tab is shown
+function loadReviewsForTab(methodName) {
+    displayReviewsForMethod(methodName);
+}
+
+// Update audit tab to show reviews
+async function loadAuditData() {
+    const auditTab = document.getElementById('audit');
+    if (!auditTab || !auditTab.classList.contains('active')) {
+        return;
+    }
+    
+    // Load from localStorage
+    const localReviews = loadReviewsFromStorage();
+    
+    // Load from JSON file
+    const jsonData = await loadReviewsFromJSON();
+    
+    // Combine both sources
+    const allReviews = [...localReviews];
+    if (jsonData.methods) {
+        Object.keys(jsonData.methods).forEach(method => {
+            if (jsonData.methods[method].reviews) {
+                jsonData.methods[method].reviews.forEach(review => {
+                    // Avoid duplicates
+                    if (!allReviews.find(r => r.id === review.id)) {
+                        allReviews.push(review);
+                    }
+                });
+            }
+        });
+    }
+    
+    // Group by method
+    const reviewsByMethod = {};
+    const methodStats = {};
+    
+    ['coattendance', 'field-degree', 'path-structure', 'centrality', 'clustering', 'components'].forEach(method => {
+        const methodReviews = allReviews.filter(r => r.method === method);
+        reviewsByMethod[method] = methodReviews;
+        
+        const stats = {
+            total: methodReviews.length,
+            correct: methodReviews.filter(r => r.rating === 'correct').length,
+            incorrect: methodReviews.filter(r => r.rating === 'incorrect').length,
+            needs_review: methodReviews.filter(r => r.rating === 'needs-review').length,
+            trust_score: 0
+        };
+        
+        if (stats.total > 0) {
+            stats.trust_score = ((stats.correct - stats.incorrect) / stats.total + 1) / 2;
+        }
+        
+        methodStats[method] = stats;
+    });
+    
+    // Display audit data
+    displayAuditData(methodStats, reviewsByMethod, jsonData.last_updated);
+}
+
+// Display audit data in the audit tab
+function displayAuditData(methodStats, reviewsByMethod, lastUpdated) {
+    const auditTab = document.getElementById('audit');
+    if (!auditTab) return;
+    
+    let html = '<h2>Community Review Audit</h2>';
+    
+    if (lastUpdated) {
+        html += `<p class="explanation">Last updated from JSON: ${new Date(lastUpdated).toLocaleString()}</p>`;
+    }
+    
+    html += '<div class="audit-stats">';
+    Object.keys(methodStats).forEach(method => {
+        const stats = methodStats[method];
+        const methodName = method.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+        html += `
+            <div class="method-stat-card">
+                <h3>${methodName}</h3>
+                <div class="stat-row">
+                    <span>Total Reviews:</span>
+                    <strong>${stats.total}</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Trust Score:</span>
+                    <strong>${(stats.trust_score * 100).toFixed(1)}%</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Ratings:</span>
+                    <span>✓ ${stats.correct} | ? ${stats.needs_review} | ✗ ${stats.incorrect}</span>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    
+    html += '<h3>All Reviews</h3>';
+    Object.keys(reviewsByMethod).forEach(method => {
+        const reviews = reviewsByMethod[method];
+        if (reviews.length === 0) return;
+        
+        const methodName = method.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+        html += `<h4>${methodName}</h4>`;
+        html += reviews.map(review => {
+            const date = new Date(review.timestamp).toLocaleString();
+            return `
+                <div class="review-item rating-${review.rating}">
+                    <div class="review-item-header">
+                        <span class="review-item-rating rating-${review.rating}">${review.rating.toUpperCase()}</span>
+                        <span class="review-item-meta">${review.reviewer} • ${date}</span>
+                    </div>
+                    <div class="review-item-comment">${escapeHtml(review.comment)}</div>
+                    ${review.suggestions ? `<div class="review-item-suggestions"><strong>Suggestions:</strong> ${escapeHtml(review.suggestions)}</div>` : ''}
+                </div>
+            `;
+        }).join('');
+    });
+    
+    auditTab.innerHTML = html;
+}
+
+// Store original showTab function
+let originalShowTab = showTab;
+
+// Override showTab to load reviews when switching tabs
+function showTabWithReviews(tabId) {
+    // Call original showTab
+    originalShowTab(tabId);
+    
+    // Load reviews for the current tab
+    setTimeout(() => {
+        const validMethods = ['coattendance', 'field-degree', 'path-structure', 'centrality', 'clustering', 'components'];
+        if (validMethods.includes(tabId)) {
+            loadReviewsForTab(tabId);
+        } else if (tabId === 'audit') {
+            loadAuditData();
+        }
+    }, 100);
+}
+
+// Replace showTab
+showTab = showTabWithReviews;
+
+// Load reviews on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Load reviews for initial tab
+    const activeTab = document.querySelector('.tab-pane.active');
+    if (activeTab) {
+        const tabId = activeTab.id;
+        if (tabId && tabId !== 'summary') {
+            if (tabId === 'audit') {
+                loadAuditData();
+            } else {
+                loadReviewsForTab(tabId);
+            }
+        }
+    }
+});
+
