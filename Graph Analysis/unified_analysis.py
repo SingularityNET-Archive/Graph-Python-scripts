@@ -495,7 +495,7 @@ def write_html_report(
             <!-- Field Degree Tab -->
             <div id="field-degree" class="tab-pane">
                 <h2>JSON Field Degree Analysis</h2>
-                """ + _review_button("field-degree") + """
+                """ + _review_form("field-degree") + """
                 <p class="explanation">Fields are connected when they appear together inside the same JSON object; a field's degree is the number of distinct fields it co-occurs with.</p>
                 
                 <h3>Top Fields by Degree</h3>
@@ -529,7 +529,7 @@ def write_html_report(
             <!-- Path Structure Tab -->
             <div id="path-structure" class="tab-pane">
                 <h2>JSON Path Structure Analysis</h2>
-                """ + _review_button("path-structure") + """
+                """ + _review_form("path-structure") + """
                 <p class="explanation">Each JSON path represents a unique nested route (keys/array indices); depth shows how deeply information is nested.</p>
                 
                 <ul class="summary-list">
@@ -563,7 +563,7 @@ def write_html_report(
             <!-- Centrality Tab -->
             <div id="centrality" class="tab-pane">
                 <h2>Field Centrality (Co-occurrence)</h2>
-                """ + _review_button("centrality") + """
+                """ + _review_form("centrality") + """
                 <p class="explanation">Centrality scores highlight fields that are well-connected (degree), act as bridges (betweenness), are close to others (closeness), or connect to other influential fields (eigenvector).</p>
                 
                 <table>
@@ -589,7 +589,7 @@ def write_html_report(
             <!-- Clustering Tab -->
             <div id="clustering" class="tab-pane">
                 <h2>Clustering (Field Co-occurrence Graph)</h2>
-                """ + _review_button("clustering") + """
+                """ + _review_form("clustering") + """
                 <p class="explanation">Clustering measures how tightly a field's neighbors are connected to each other (higher means more triads).</p>
                 
                 <p><strong>Average Clustering Coefficient:</strong> """)
@@ -614,7 +614,7 @@ def write_html_report(
             <!-- Connected Components Tab -->
             <div id="components" class="tab-pane">
                 <h2>Connected Components (Field Co-occurrence Graph)</h2>
-                """ + _review_button("components") + """
+                """ + _review_form("components") + """
                 <p class="explanation">Components are groups of fields that are all reachable from each other; multiple components suggest separate substructures.</p>
                 
                 <ul class="summary-list">
