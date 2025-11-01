@@ -19,18 +19,15 @@ body:
     validations:
       required: true
 
-  - type: radio
+  - type: dropdown
     id: rating
     attributes:
       label: Rating
       description: How would you rate the accuracy of this analysis?
       options:
-        - label: Correct
-          value: correct
-        - label: Needs Review
-          value: needs-review
-        - label: Incorrect
-          value: incorrect
+        - Correct
+        - Needs Review
+        - Incorrect
     validations:
       required: true
 

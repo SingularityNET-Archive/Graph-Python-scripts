@@ -81,6 +81,37 @@ def extract_rating_from_labels(labels: List[Any]) -> Optional[str]:
     return None
 
 
+def extract_rating_from_body(body: str) -> Optional[str]:
+    """Extract rating from issue body (template dropdown field)."""
+    if not body:
+        return None
+    
+    # Try to find rating from template field (dropdown)
+    rating_match = re.search(r'###\s*Rating\s*\n\s*([^\n]+)', body, re.IGNORECASE)
+    if rating_match:
+        rating = rating_match.group(1).strip()
+        return normalize_rating(rating)
+    
+    return None
+
+
+def normalize_rating(rating: str) -> str:
+    """Normalize rating value to standard format."""
+    if not rating:
+        return "needs-review"
+    
+    rating_lower = rating.lower().strip()
+    # Handle dropdown format values (with spaces, title case)
+    if "correct" in rating_lower:
+        return "correct"
+    elif "incorrect" in rating_lower:
+        return "incorrect"
+    elif "needs review" in rating_lower or "needs-review" in rating_lower or "needs_review" in rating_lower:
+        return "needs-review"
+    else:
+        return "needs-review"  # Default
+
+
 def extract_comment_from_body(body: str) -> str:
     """Extract comment text from issue body."""
     if not body:
@@ -162,9 +193,12 @@ def main() -> None:
             # Skip issues without a valid method
             continue
 
-        rating = extract_rating_from_labels(list(issue.labels))
+        # Try to extract rating from body first (template field), then from labels
+        rating = extract_rating_from_body(issue.body or "")
         if not rating:
-            rating = "needs-review"  # Default if no rating label
+            rating = extract_rating_from_labels(list(issue.labels))
+        if not rating:
+            rating = "needs-review"  # Default if no rating found
 
         comment = extract_comment_from_body(issue.body or "")
 
